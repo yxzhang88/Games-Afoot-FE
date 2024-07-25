@@ -1,42 +1,58 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Set body, html, and root to occupy full height and remove default margin */
+body, html, #root {
+  height: 100%;
+  margin: 0;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Container for the entire app, using flexbox to layout the content */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Header section with flexbox layout to space out logo and dropdown menu */
+.header {
+  display: flex;
+  justify-content: space-between; /* Space between logo and dropdown menu */
+  align-items: center; /* Center items vertically */
+  padding: 10px; /* Padding around the header content */
+  background-color: #f8f9fa; /* Light background color for the header */
+}
+
+/* Content section that holds both the map and other content */
+.content {
+  display: flex;
+  flex: 1; /* Take up the remaining space */
+  height: 100%; /* Make sure content takes the full available height */
+}
+
+/* Container for other content, occupying one-third of the content area */
+.other-content {
+  flex: 1; /* 1/3 of the container width */
+  background-color:aliceblue; /* Light grey background for contrast */
+  display: flex; /* Flexbox to center content */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  padding: 10px; /* Padding around the other content */
+  margin-left: 10px; /* Adjust the space as needed */
+  overflow: auto; /* Allow scrolling if content overflows */
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column; /* Stack content vertically on mobile */
   }
-  to {
-    transform: rotate(360deg);
+
+  .other-content{
+    width: 100%; /* Ensure both sections take full width on mobile */
+    margin-left: 0; /* Remove any left margin */
+    margin-right: 0; /* Remove any right margin */
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  .other-content {
+    order: -1; /* Place other content above the map */
+    min-height: 100px; /* Set a minimum height to ensure it isn't too small */
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }

@@ -1,0 +1,14 @@
+/* Container for the map */
+.map-container {
+  flex: 2; /* Default flex-basis for desktop */
+  height: 100%; /* Ensure map container takes full height of its parent */
+  margin-left: 10px; /* Adjust the space as needed */
+  margin-right: 10px; /* Adjust the space as needed */
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .map-container {
+    width: 100%; /* Ensure map container takes full width on mobile */
+  }
+}
