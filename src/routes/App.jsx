@@ -1,7 +1,7 @@
 // import Recact from 'react';
-import MapContainer from '../maps/MapContainer';
+import MapContainer from '../components/MapContainer';
 import './App.css'; // General styles
-import '../maps/MapStyles.css'; // Map-specific styles
+import '../components/MapStyles.css'; // Map-specific styles
 
 function App() {
   return (
