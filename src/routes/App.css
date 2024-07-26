@@ -17,7 +17,48 @@ body, html, #root {
   justify-content: space-between; /* Space between logo and dropdown menu */
   align-items: center; /* Center items vertically */
   padding: 10px; /* Padding around the header content */
-  background-color: #f8f9fa; /* Light background color for the header */
+  position: relative; /* To position the dropdown relative to the header */
+  background-color: #F0D1C2; /* Light background color for the header */
+  z-index: 20; /* Ensure the header and its dropdown are above other content */
+}
+
+/* Menu button styling */
+.menu-button {
+  background-color: #655e5e; /* Purple background color */
+  border: none; /* Remove default border */
+  border-radius: 50%; /* Make the button round */
+  width: 40px; /* Set width */
+  height: 40px; /* Set height */
+  color: white; /* White icon color */
+  font-size: 24px; /* Icon size */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Menu button and dropdown */
+.menu {
+  position: relative;
+  z-index: 30; /* Ensure the menu and dropdown are above other content */
+}
+
+.dropdown-menu {
+  position: absolute; /* Position absolutely to the menu button */
+  top: 100%; /* Place the dropdown directly below the menu button */
+  right: 0; /* Align to the right edge of the menu button */
+  background-color: white; /* Background color of the dropdown */
+  border: 1px solid #ccc; /* Border for the dropdown */
+  border-radius: 8px; /* Rounded corners for the dropdown */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Add a shadow for better visibility */
+  z-index: 40; /* Ensure the dropdown is above other elements */
+  margin-top: 8px; /* Add some space between the button and the dropdown */
+}
+
+.dropdown-item {
+  padding: 5px 20px; /* Padding for each dropdown item */
+  cursor: pointer; /* Cursor pointer on hover */
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0; /* Background color on hover */
 }
 
 /* Content section that holds both the map and other content */
@@ -30,7 +71,7 @@ body, html, #root {
 /* Container for other content, occupying one-third of the content area */
 .other-content {
   flex: 1; /* 1/3 of the container width */
-  background-color:aliceblue; /* Light grey background for contrast */
+  background-color: #F9EFE5; /* Light grey background for contrast */
   display: flex; /* Flexbox to center content */
   justify-content: center; /* Center content horizontally */
   align-items: center; /* Center content vertically */
@@ -47,12 +88,15 @@ body, html, #root {
 
   .other-content{
     width: 100%; /* Ensure both sections take full width on mobile */
-    margin-left: 0; /* Remove any left margin */
-    margin-right: 0; /* Remove any right margin */
-  }
-
-  .other-content {
+    margin: 0; 
     order: -1; /* Place other content above the map */
     min-height: 100px; /* Set a minimum height to ensure it isn't too small */
   }
+
+  .header, .other-content {
+    box-sizing: border-box; /* Ensure padding is included in the width */
+    width: 100%; /* Ensure both sections take full width on mobile */
+    padding: 20px; /* Ensure consistent padding */
+  }
 }
+
