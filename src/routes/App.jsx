@@ -48,7 +48,14 @@ const App = () => {
                 </div>
             </header>
             <div className="content">
-                <div className="other-content">Other Content</div>
+                <div className="other-content">
+                    <div className="user-input">
+                        user input
+                    </div>
+                    <div className="progress-tracking">
+                        progress tracking
+                    </div>
+                </div>
                 <div className="map-container">
                     <MapContainer />
                 </div>
