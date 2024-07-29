@@ -1,72 +1,93 @@
-import { MapContainer as LeafletMapContainer, TileLayer, useMap } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS for default styling
-import './MapStyles.css'; 
-import PropTypes from 'prop-types'; // Import PropTypes for prop validation
-import LocationMarker from './LocationMarker'; // LocationMarker component
-import L from 'leaflet'; // Leaflet for default icon fixes
-import { useState, useEffect} from 'react';
+import {
+    MapContainer as LeafletMapContainer,
+    TileLayer,
+    useMap,
+} from "react-leaflet";
+import "leaflet/dist/leaflet.css"; // Import Leaflet CSS for default styling
+import "./MapStyles.css";
+import PropTypes from "prop-types"; // Import PropTypes for prop validation
+import LocationMarker from "./LocationMarker"; // LocationMarker component
+import L from "leaflet"; // Leaflet for default icon fixes
+import { useState, useEffect } from "react";
 
 // Fix default icon issues
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
-  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+    iconRetinaUrl:
+        "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
+    iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+    shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
 });
 
 // Custom hook to center map on position change
 const MapCenter = ({ position }) => {
-  const map = useMap(); // Access the Leaflet map instance
-  
-  useEffect(() => {
-    if (position) {
-      map.setView(position, map.getZoom()); // Update map center to the new position
-    }
-  }, [position, map]); // Depend on position and map
+    const map = useMap(); // Access the Leaflet map instance
 
-  return null;
+    useEffect(() => {
+        if (position) {
+            map.setView(position, map.getZoom()); // Update map center to the new position
+        }
+    }, [position, map]); // Depend on position and map
+
+    return null;
 };
 
 MapCenter.propTypes = {
-  position: PropTypes.arrayOf(PropTypes.number).isRequired, // Validate that position is an array of numbers
+    position: PropTypes.arrayOf(PropTypes.number).isRequired, // Validate that position is an array of numbers
 };
 
+const MapContainer = ({ updateLocation }) => {
+    // State for map center position with default coordinates
+    const [position, setPosition] = useState([51.505, -0.09]);
+    const [initialLoad, setInitialLoad] = useState(true);
 
-const MapContainer = () =>
-{
-  // State for map center position with default coordinates
-  const [position, setPosition] = useState([51.505, -0.09]); 
+    useEffect(() => {
+        if (navigator.geolocation) {
+            const getLocation = () => {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        const { latitude, longitude } = pos.coords; // Extract latitude and longitude from position object
+                        const newPosition = [latitude, longitude];
+                        setPosition(newPosition); // Update position state with new coordinates
+                        updateLocation(newPosition); // Pass new coordinates to parent component
+                    },
+                    (error) => {
+                        console.error("Error retrieving position:", error); // Error handling
+                    },
+                    { enableHighAccuracy: true } // Use high accuracy if possible
+                );
+            };
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      const watchId = navigator.geolocation.watchPosition(
-        (pos) => {
-          const { latitude, longitude } = pos.coords; // Extract latitude and longitude from position object
-          setPosition([latitude, longitude]); // Update position state with new coordinates
-        },
-        (error) => {
-          console.error("Error retrieving position:", error); // Error handling
-        },
-        { enableHighAccuracy: true } // Use high accuracy if possible
-      );
+            // Get location on initial load
+            if (initialLoad) {
+                getLocation();
+                setInitialLoad(false);
+            }
+        } else {
+            console.error("Geolocation not supported by this browser.");
+        }
+    }, [updateLocation, initialLoad]); // Dependency on updateLocation and initialLoad
 
-      // Cleanup on unmount
-      return () => navigator.geolocation.clearWatch(watchId);
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }, []);
+    return (
+        <LeafletMapContainer
+            center={position}
+            zoom={13}
+            style={{ height: "100vh", width: "100%" }}
+        >
+            <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <MapCenter position={position} />{" "}
+            {/* Render the MapCenter component to adjust map view */}
+            <LocationMarker position={position} />{" "}
+            {/* Render the LocationMarker component with the current position */}
+        </LeafletMapContainer>
+    );
+};
 
-  return (
-    <LeafletMapContainer center={position} zoom={13} style={{ height: '100vh', width: '100%' }}>
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-      <MapCenter position={position} />  {/* Render the MapCenter component to adjust map view */}
-      <LocationMarker position={position} /> {/* Render the LocationMarker component with the current position */}
-    </LeafletMapContainer>
-  );
+MapContainer.propTypes = {
+    updateLocation: PropTypes.func.isRequired, // Validate that updateLocation is a function
 };
 
 export default MapContainer;

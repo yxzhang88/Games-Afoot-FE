@@ -1,93 +1,77 @@
-.active {
-    background-color: orange;
-}
-
-nav {
+/* Header section with flexbox layout to space out logo and dropdown menu */
+.header {
     display: flex;
     justify-content: space-between;
+    /* Space between logo and dropdown menu */
     align-items: center;
-    background-color: peru;
-    position: sticky;
-    top: 0;
-
+    /* Center items vertically */
+    padding: 10px;
+    /* Padding around the header content */
+    position: relative;
+    /* To position the dropdown relative to the header */
+    background-color: #F0D1C2;
+    /* Light background color for the header */
+    z-index: 20;
+    /* Ensure the header and its dropdown are above other content */
 }
 
-nav .title {
+/* Menu button styling */
+.menu-button {
+    background-color: #655e5e;
+    /* Purple background color */
+    border: none;
+    /* Remove default border */
+    border-radius: 50%;
+    /* Make the button round */
+    width: 40px;
+    /* Set width */
+    height: 40px;
+    /* Set height */
     color: white;
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-decoration: none;
-    margin: 1rem;
-    color: white
+    /* White icon color */
+    font-size: 24px;
+    /* Icon size */
+    cursor: pointer;
+    /* Pointer cursor on hover */
 }
 
-nav ul {
-    display: flex;
+/* Menu button and dropdown */
+.menu {
+    position: relative;
+    z-index: 30;
+    /* Ensure the menu and dropdown are above other content */
 }
 
-nav ul li {
-    list-style: none;
-}
-
-nav ul li a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem;
-    margin: 0 0.5rem;
-    border-radius: 0.5rem;
-}
-
-nav ul li a:not(.active):hover {
-    background-color: #e2725b;
-}
-
-nav .menu {
-    display: none;
+.dropdown-menu {
     position: absolute;
-    top: 0.75rem;
-    right: 0.5rem;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 2.25rem;
-    height: 2rem;
-
-}
-
-nav .menu span {
-    height: 0.4rem;
-    width: 100%;
+    /* Position absolutely to the menu button */
+    top: 100%;
+    /* Place the dropdown directly below the menu button */
+    right: 0;
+    /* Align to the right edge of the menu button */
     background-color: white;
-    border-radius: 0.2rem;
+    /* Background color of the dropdown */
+    border: 1px solid #ccc;
+    /* Border for the dropdown */
+    border-radius: 8px;
+    /* Rounded corners for the dropdown */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    /* Add a shadow for better visibility */
+    z-index: 40;
+    /* Ensure the dropdown is above other elements */
+    margin-top: 8px;
+    /* Add some space between the button and the dropdown */
 }
 
-@media (max-width: 480px) {
-    nav .menu {
-        display: flex;
-    }
+.dropdown-item {
+    padding: 5px 25px;
+    /* Padding for each dropdown item */
+    cursor: pointer;
+    /* Cursor pointer on hover */
 
-    nav {
-        flex-direction: column;
-        align-items: start;
-    }
+}
 
-    nav ul {
-        display: none;
-        flex-direction: column;
-        width: 90%;
-        margin-bottom: 0.25rem;
-    }
-
-    nav ul.open {
-        display: flex;
-    }
-
-    nav ul li {
-        width: 100%;
-        text-align: center;
-    }
-
-    nav ul li a {
-        margin: 0.2rem 0.5rem;
-    }
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+    /* Background color on hover */
 }
