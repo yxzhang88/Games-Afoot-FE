@@ -8,6 +8,7 @@ import Instruction from "../components/Instruction";
 import InputForm from "../components/InputForm";
 import "./App.css"; // General styles
 import "../components/MapStyles.css"; // Map-specific styles
+import AppContent from "../components/AppContent";
 
 const App = () => {
     const [currentLocation, setCurrentLocation] = useState([51.505, -0.09]);
@@ -24,18 +25,7 @@ const App = () => {
                         path="/"
                         element={
                             <div>
-                                <div className="content">
-                                    <div className="other-content">
-                                        <InputForm
-                                            currentLocation={currentLocation}
-                                        />
-                                    </div>
-                                    <div className="map-container">
-                                        <MapContainer
-                                            updateLocation={updateLocation}
-                                        />
-                                    </div>
-                                </div>
+                                <AppContent />
                             </div>
                         }
                     />

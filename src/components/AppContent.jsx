@@ -166,20 +166,26 @@ const AppContent = () => {
 
     return (
         <div>
-            <InputForm
-                getSelections={handleSelectionData}
-                currentLocation={currentLocation}
-            />
-            {gameData && (
-                <>
-                    <MapContainer updateLocation={updateLocation} />
-                    <Progress
-                        onCheckLocation={handleCheckLocationClick}
+            <div className="content">
+                <div className="other-content">
+                    <InputForm
+                        getSelections={handleSelectionData}
                         currentLocation={currentLocation}
-                        gameData={gameData}
                     />
-                </>
-            )}
+                    <div className="map-container">
+                        {gameData && (
+                            <>
+                                <MapContainer updateLocation={updateLocation} />
+                                <Progress
+                                    onCheckLocation={handleCheckLocationClick}
+                                    currentLocation={currentLocation}
+                                    gameData={gameData}
+                                />
+                            </>
+                        )}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

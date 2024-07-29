@@ -86,7 +86,7 @@ function InputForm({ currentLocation, getSelections }) {
 
 InputForm.propTypes = {
     currentLocation: PropTypes.arrayOf(PropTypes.number).isRequired,
-    getSelection: PropTypes.func.isRequired,
+    getSelections: PropTypes.func.isRequired,
 };
 
 export default InputForm;
