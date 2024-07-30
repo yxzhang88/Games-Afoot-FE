@@ -8,7 +8,7 @@ function InputForm({ currentLocation, startGame }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Starting game with:", {
+        console.log("Selections from inputform:", {
             currentLocation,
             distance, //why need user input distance when we have numsites?
             numSites,

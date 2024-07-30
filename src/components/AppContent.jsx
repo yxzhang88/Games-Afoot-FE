@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputForm from "./InputForm";
 import Progress from "./Progress";
 import MapContainer from "./MapContainer";
@@ -8,7 +8,7 @@ import calculateDistance from "../utilityFunctions/calculateDistance";
 
 // const kBaseUrl = import.meta.env.REACT_APP_BACKEND_URL;
 
-const hardCodedData = {
+const hardCodedGamePiece = {
     locations: [
         {
             clues: [
@@ -48,15 +48,20 @@ const AppContent = () => {
     const handleSelectionData = (gameSelections) => {
         console.log("Starting game with this selections:", gameSelections);
         setSelectionData(gameSelections);
+        console.log("selectionData:", selectionData);
     };
 
-    const handleStartGame = (hardCodedData) => {
-        console.log("Starting game with this data:", hardCodedData);
-        setGameData(hardCodedData);
+    useEffect(() => {
+        console.log("selectionData has been updated:", selectionData);
+    }, [selectionData]);
+
+    const handleStartGame = (hardCodedGamePiece) => {
+        console.log("Starting game with this data:", hardCodedGamePiece);
+        setGameData(hardCodedGamePiece);
     };
     const startGame = () => {
-        handleSelectionData(hardCodedData);
-        handleStartGame(hardCodedData);
+        handleSelectionData(selectionData);
+        handleStartGame(hardCodedGamePiece);
     };
 
     return (
