@@ -1,190 +1,83 @@
-import { useEffect, useCallback, useState } from "react";
-import InputForm from "./components/InputForm";
-import Progress from "./components/Progress";
-import MapContainer from "./components/MapContainer";
-import huntMockData from "../mocks/huntMockData.json";
+import { useState } from "react";
+import InputForm from "./InputForm";
+import Progress from "./Progress";
+import MapContainer from "./MapContainer";
+import "./MapStyles.css"; // Map-specific styles
+import "./AppContent.css"; // General styles
+import calculateDistance from "../utilityFunctions/calculateDistance";
 
 // const kBaseUrl = import.meta.env.REACT_APP_BACKEND_URL;
+
+const hardCodedData = {
+    locations: [
+        {
+            clues: [
+                "A historic park featuring a beautiful garden and scenic views of San Francisco Bay.",
+                "It includes walking trails, a pond, and several historical monuments.",
+                "Look for the large gazebo and picnic areas.",
+            ],
+            description:
+                "A popular park in San Francisco known for its picturesque landscapes and family-friendly environment.",
+            id: 1,
+            latitude: "37.7353",
+            longitude: "-122.4767",
+            name: "Golden Gate Park",
+        },
+        {
+            clues: [
+                "This historic site is known for its role in the early development of San Francisco.",
+                "It features a museum with exhibits on local history and a preserved 19th-century building.",
+                "Look for the old brick building with a clock tower.",
+            ],
+            description:
+                "A local museum offering insights into the early history of San Francisco and its development.",
+            id: 2,
+            latitude: "37.7375",
+            longitude: "-122.4782",
+            name: "San Francisco History Museum",
+        },
+    ],
+};
 
 const AppContent = () => {
     const [selectionData, setSelectionData] = useState(null);
     const [gameData, setGameData] = useState(null);
     const [currentLocation, setCurrentLocation] = useState([51.505, -0.09]);
-    const [userCheckedLocation, setUserCheckedLocation] = useState(false);
 
+    //callback function to get selection from InputForm
     const handleSelectionData = (gameSelections) => {
         console.log("Starting game with this selections:", gameSelections);
         setSelectionData(gameSelections);
     };
 
-    // Use mockFetch function to simulate API call
-    const mockFetch = (selectionData) => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                console.log("Mock sending data:", selectionData);
-                resolve({
-                    ok: true,
-                    json: () => Promise.resolve(huntMockData),
-                });
-            }, 1000);
-        });
+    const handleStartGame = (hardCodedData) => {
+        console.log("Starting game with this data:", hardCodedData);
+        setGameData(hardCodedData);
     };
-
-    const handleStartGame = (selectionData) => {
-        try {
-            // Use mockFetch instead of fetch
-            const response = mockFetch(selectionData);
-            if (response.ok) {
-                const gamePiece = response.json();
-                console.log(gamePiece);
-                setGameData(gamePiece);
-            } else {
-                console.error("Error starting game:", response.statusText);
-            }
-        } catch (error) {
-            console.error("Error starting game:", error);
-        }
-    };
-    // API call when backend is ready
-    // try {
-    //     const response = await fetch(kBaseUrl, {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify(gameData),
-    //     });
-
-    //     const data = await response.json();
-    //     startGame(data);
-    // } catch (error) {
-    //     console.error("Error starting game:", error);
-    // }
-    //};
-    const updateLocation = useCallback((location) => {
-        //Only update current location if the user click check location button
-        // to prevent overloading the API
-        setCurrentLocation(location);
-        setUserCheckedLocation(true);
-    }, []);
-
-    const handleCheckLocationClick = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const { latitude, longitude } = pos.coords;
-                    const newPosition = [latitude, longitude];
-                    updateLocation(newPosition);
-                },
-                (error) => {
-                    console.error("Error retrieving position:", error);
-                },
-                { enableHighAccuracy: true }
-            );
-        } else {
-            console.error("Geolocation not supported by this browser.");
-        }
-    };
-
-    useEffect(() => {
-        if (userCheckedLocation && currentLocation) {
-            // Only update location when the user clicks the check location button
-            checkProximityToLandmark(currentLocation);
-        }
-    }, [
-        userCheckedLocation,
-        currentLocation,
-        gameData,
-        checkProximityToLandmark,
-    ]);
-
-    const calculateDistance = (lat1, lon1, lat2, lon2) => {
-        const R = 6371; // Radius of the earth in km
-        const dLat = ((lat2 - lat1) * Math.PI) / 180;
-        const dLon = ((lon2 - lon1) * Math.PI) / 180;
-        const a =
-            0.5 -
-            Math.cos(dLat) / 2 +
-            (Math.cos((lat1 * Math.PI) / 180) *
-                Math.cos((lat2 * Math.PI) / 180) *
-                (1 - Math.cos(dLon))) /
-                2;
-        return R * 2 * Math.asin(Math.sqrt(a));
-    };
-    // Check distance from the landmark and update hints(need to add)
-    const checkProximityToLandmark = useCallback(
-        (location) => {
-            const [latitude, longitude] = location;
-            if (gameData && gameData.locations) {
-                gameData.locations.forEach((landmark) => {
-                    //converting string to number
-                    const landmarkLat = parseFloat(landmark["location lat"]);
-                    const landmarkLong = parseFloat(landmark["location long"]);
-
-                    if (!isNaN(landmarkLat) && !isNaN(landmarkLong)) {
-                        const distance = calculateDistance(
-                            latitude,
-                            longitude,
-                            landmarkLat,
-                            landmarkLong
-                        );
-                        if (distance < 0.1) {
-                            console.log("Userfound landmark!");
-                        } else {
-                            console.log("User is not near the landmark");
-                        }
-                    } else {
-                        console.error(
-                            "Invalid landmark cordinations",
-                            landmark
-                        );
-                    }
-                });
-            } else {
-                console.error("Game data or landmark data not available");
-            }
-        },
-        [gameData]
-    );
-
-    useEffect(() => {
-        if (userCheckedLocation && currentLocation) {
-            checkProximityToLandmark(currentLocation);
-        }
-    }, [
-        userCheckedLocation,
-        currentLocation,
-        gameData,
-        checkProximityToLandmark,
-    ]);
-
     const startGame = () => {
-        handleSelectionData();
-        handleStartGame();
-        checkProximityToLandmark();
+        handleSelectionData(hardCodedData);
+        handleStartGame(hardCodedData);
     };
 
     return (
         <div>
             <div className="content">
                 <div className="other-content">
-                    <InputForm
-                        getSelections={handleSelectionData}
-                        currentLocation={currentLocation}
-                    />
-                    <div className="map-container">
-                        {gameData && (
-                            <>
-                                <MapContainer updateLocation={updateLocation} />
-                                <Progress
-                                    onCheckLocation={handleCheckLocationClick}
-                                    currentLocation={currentLocation}
-                                    gameData={gameData}
-                                />
-                            </>
-                        )}
+                    <div className="user-input">
+                        <InputForm
+                            getSelections={handleSelectionData}
+                            currentLocation={currentLocation}
+                            startGame={startGame}
+                        />
+                    </div>
+                    <div className="progresss-tracking">
+                        <Progress
+                            currentLocation={currentLocation}
+                            gameData={gameData}
+                        />
                     </div>
                 </div>
+                <div className="map-container">{<MapContainer />}</div>
             </div>
         </div>
     );

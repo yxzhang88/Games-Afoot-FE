@@ -1,0 +1,66 @@
+/* Content section that holds both the map and other content */
+.content {
+    display: flex;
+    flex: 1;
+    /* Take up the remaining space */
+    height: 100%;
+    /* Make sure content takes the full available height */
+}
+
+/* Container for other content, occupying one-third of the content area */
+.other-content {
+    flex: 1;
+    /* 1/3 of the container width */
+    background-color: #F9EFE5;
+    /* Light grey background for contrast */
+    display: flex;
+    /* Flexbox to center content */
+    flex-direction: column;
+    justify-content: center;
+    /* Center content horizontally */
+    align-items: center;
+    /* Center content vertically */
+    padding: 10px;
+    /* Padding around the other content */
+    margin-left: 10px;
+    /* Adjust the space as needed */
+    overflow: auto;
+    /* Allow scrolling if content overflows */
+}
+
+.user-input {
+    flex: 1;
+    padding: 5px;
+}
+
+.progress-tracking {
+    flex: 2;
+    padding: 5px;
+}
+
+
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column;
+        /* Stack content vertically on mobile */
+    }
+
+    .other-content {
+        width: 100%;
+        /* Ensure both sections take full width on mobile */
+        margin: 0;
+        order: -1;
+        /* Place other content above the map */
+        min-height: 100px;
+        /* Set a minimum height to ensure it isn't too small */
+        box-sizing: border-box;
+        /* Ensure padding is included in the width */
+        width: 100%;
+        /* Ensure both sections take full width on mobile */
+        padding: 20px;
+        /* Ensure consistent padding */
+    }
+
+}

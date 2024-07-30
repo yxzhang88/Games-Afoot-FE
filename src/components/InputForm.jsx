@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-function InputForm({ currentLocation, getSelections }) {
+function InputForm({ currentLocation, startGame }) {
     const [distance, setDistance] = useState("");
     const [numSites, setNumSites] = useState("");
     const [gameType, setGameType] = useState("");
@@ -26,7 +26,7 @@ function InputForm({ currentLocation, getSelections }) {
             start_longitude: currentLocation[1].toString(),
         };
 
-        getSelections(gameSelections);
+        startGame(gameSelections);
     };
     return (
         <div className="input-form">
@@ -86,7 +86,7 @@ function InputForm({ currentLocation, getSelections }) {
 
 InputForm.propTypes = {
     currentLocation: PropTypes.arrayOf(PropTypes.number).isRequired,
-    getSelections: PropTypes.func.isRequired,
+    startGame: PropTypes.func.isRequired,
 };
 
 export default InputForm;
