@@ -1,5 +1,6 @@
 // import Recact from 'react';
 import MapContainer from "../components/MapContainer";
+import ProgressWindow from '../components/Progress';
 import "./App.css"; // General styles
 import "../components/MapStyles.css"; // Map-specific styles
 import { useState, useRef, useEffect } from "react";
@@ -28,6 +29,25 @@ const App = () => {
         };
     }, []);
 
+    // Manage the state and data here
+    const [currentSpot] = useState(1);
+    const totalSpots = 3;
+    const userLocation = {
+        latitude: 37.631565,
+        longitude: -122.375373
+    };
+    const [hint, setHint] = useState("Look near the big oak tree.");
+    const distance = "5 km";
+    
+    const checkLocation = () => {
+        console.log('Checking location...');
+    };
+
+    const getMoreHints = () => {
+        setHint("The spot is near a historical marker.");
+    };
+    
+
     return (
         <div className="app-container">
             <header className="header">
@@ -53,7 +73,14 @@ const App = () => {
                         user input
                     </div>
                     <div className="progress-tracking">
-                        progress tracking
+                        <ProgressWindow
+                            currentSpot={currentSpot}
+                            totalSpots={totalSpots}
+                            userLocation={userLocation}
+                            checkLocation={checkLocation}
+                            distance={distance}
+                            hint={hint}
+                            getMoreHints={getMoreHints}/>
                     </div>
                 </div>
                 <div className="map-container">
