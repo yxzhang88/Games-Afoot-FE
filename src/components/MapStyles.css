@@ -4,10 +4,6 @@
     /* Default flex-basis for desktop */
     height: 100%;
     /* Ensure map container takes full height of its parent */
-    margin-left: 10px;
-    /* Adjust the space as needed */
-    margin-right: 10px;
-    /* Adjust the space as needed */
     position: relative;
     /* Ensure map container is positioned relative */
     z-index: 5;

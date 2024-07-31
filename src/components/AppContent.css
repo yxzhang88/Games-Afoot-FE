@@ -29,13 +29,13 @@
 .user-input {
     flex: 1;
     padding: 10px;
-    border: 1px solid rgb(0, 0, 0);
+    /* border: 1px solid rgb(0, 0, 0); */
 }
 
 .progress-tracking {    
     flex: 2;
     padding: 0px;
-    border: 1px solid rgb(0, 0, 0);
+    /* border: 1px solid rgb(0, 0, 0); */
 }
 
 
