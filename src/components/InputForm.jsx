@@ -8,12 +8,6 @@ function InputForm({ currentLocation, startGame }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Selections from inputform:", {
-            currentLocation,
-            distance, //why need user input distance when we have numsites?
-            numSites,
-            gameType,
-        });
         if (!distance || !numSites || !gameType) {
             alert("Please select all options");
             return;
@@ -75,7 +69,7 @@ function InputForm({ currentLocation, startGame }) {
                     <p>Latitude: {currentLocation[0]}</p>
                     <p>Longitude: {currentLocation[1]}</p>
                 </div>
-                <button onClick={handleSubmit} type="submit">
+                <button type="submit">
                     Start Game
                 </button>
                 {/* Add reset game button later */}

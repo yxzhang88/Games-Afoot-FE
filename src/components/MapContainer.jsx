@@ -38,7 +38,7 @@ MapCenter.propTypes = {
 
 const MapContainer = ({ updateLocation }) => {
     // State for map center position with default coordinates
-    const [position, setPosition] = useState([51.505, -0.09]);
+    const [position, setPosition] = useState([47.636719, -122.366806]);
     const [initialLoad, setInitialLoad] = useState(true);
 
     useEffect(() => {
