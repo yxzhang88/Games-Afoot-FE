@@ -19,7 +19,7 @@ const LocationMarker = ({ position }) => {
     });
 
     // Hardcoded target location and details
-    const targetPosition = [47.636719, -122.366806]; 
+    const targetPosition = [47.636719, -122.366706]; 
     // test -122.371000
     const targetName = "Test Spot";
     const targetDetails = "This is a detailed description of the target spot.";
@@ -46,9 +46,9 @@ const LocationMarker = ({ position }) => {
                         <>
                             <strong>Congratulation! You have reached:</strong>
                             <br />
-                            Target: {targetName}
+                            Target Name: {targetName}
                             <br />
-                            Details: {targetDetails}
+                            Description: {targetDetails}
                         </>
                     ) : (
                         <>

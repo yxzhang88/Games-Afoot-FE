@@ -5,14 +5,18 @@ const Progress = ({ currentLocation }) => {
         <div className="other-content">
             <h2>Progress</h2>
             <div>
-                <span>Current Location: {currentLocation}</span>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <h4 style={{ margin: 0, marginRight: '10px' }}>Your location:</h4>
+                <button type="submit">Check Location</button>
             </div>
-            <button type="submit">Check Location</button>
-            <div>
-                <span>Distance in Miles: 3 miles</span>
+                <p>Latitude: {currentLocation[0]}</p>
+                <p>Longitude: {currentLocation[1]}</p>
             </div>
             <div>
-                <span>Hint: go to the corner</span>
+                <span>Distance to Targe: 2 miles</span>
+            </div>
+            <div>
+                <span>Hint: go to the cornego to the cornego to the corner</span>
                 {/* show one hint at a time */}
             </div>
         </div>
