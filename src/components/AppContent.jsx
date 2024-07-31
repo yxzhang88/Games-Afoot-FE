@@ -75,7 +75,7 @@ const AppContent = () => {
                             startGame={startGame}
                         />
                     </div>
-                    <div className="progresss-tracking">
+                    <div className="progress-tracking">
                         <Progress
                             currentLocation={currentLocation}
                             gameData={gameData}

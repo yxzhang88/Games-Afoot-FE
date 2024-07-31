@@ -10,32 +10,32 @@
 /* Container for other content, occupying one-third of the content area */
 .other-content {
     flex: 1;
-    /* 1/3 of the container width */
     background-color: #F9EFE5;
-    /* Light grey background for contrast */
     display: flex;
-    /* Flexbox to center content */
     flex-direction: column;
-    justify-content: center;
-    /* Center content horizontally */
-    align-items: center;
-    /* Center content vertically */
+    justify-content: flex-start;
+    align-items: flex-start;
     padding: 10px;
-    /* Padding around the other content */
-    margin-left: 10px;
-    /* Adjust the space as needed */
+    margin-left: 0px;
     overflow: auto;
-    /* Allow scrolling if content overflows */
+}
+
+/* Style for individual divs inside other-content */
+.other-content div {
+    margin-bottom: 5px; /* Add spacing between elements */
+    width: auto; 
 }
 
 .user-input {
     flex: 1;
-    padding: 5px;
+    padding: 20px;
+    border: 1px solid rgb(0, 0, 0);
 }
 
-.progress-tracking {
+.progress-tracking {    
     flex: 2;
-    padding: 5px;
+    padding: 0px;
+    border: 1px solid rgb(0, 0, 0);
 }
 
 
