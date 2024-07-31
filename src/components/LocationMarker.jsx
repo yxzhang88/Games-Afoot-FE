@@ -19,15 +19,21 @@ const LocationMarker = ({ position }) => {
     });
 
     // Hardcoded target location and details
-    const targetPosition = [47.636719, -122.366706]; 
+    const targetPosition = [47.636719, -122.366706];
     // test -122.371000
     const targetName = "Test Spot";
     const targetDetails = "This is a detailed description of the target spot.";
- 
+
     // Destructure latitude and longitude from the position array
     const [latitude, longitude] = position;
 
-    const isCloseToTarget = calculateDistance(latitude, longitude, targetPosition[0], targetPosition[1]) < 0.1;
+    const isCloseToTarget =
+        calculateDistance(
+            latitude,
+            longitude,
+            targetPosition[0],
+            targetPosition[1]
+        ) < 0.1;
 
     const markerRef = useRef(null);
 

@@ -10,7 +10,7 @@
 /* Container for other content, occupying one-third of the content area */
 .other-content {
     flex: 1;
-    background-color: #F9EFE5;
+    background-color: lightgray;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -22,8 +22,9 @@
 
 /* Style for individual divs inside other-content */
 .other-content div {
-    margin-bottom: 5px; /* Add spacing between elements */
-    width: auto; 
+    margin-bottom: 5px;
+    /* Add spacing between elements */
+    width: auto;
 }
 
 .user-input {
@@ -32,7 +33,7 @@
     /* border: 1px solid rgb(0, 0, 0); */
 }
 
-.progress-tracking {    
+.progress-tracking {
     flex: 2;
     padding: 0px;
     /* border: 1px solid rgb(0, 0, 0); */
