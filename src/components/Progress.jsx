@@ -1,22 +1,31 @@
 import PropTypes from "prop-types";
+// import calculateDistance from "../utilityFunctions/calculateDistance";
 
-const Progress = ({ currentLocation }) => {
+const Progress = ({ firstClue, currentLocation }) => {
+    console.log("Progress component:", {
+        firstClue,
+        currentLocation,
+    });
+    console.log("first Clue:", firstClue);
+
     return (
         <div className="other-content">
             <h2>Progress</h2>
             <div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <h4 style={{ margin: 0, marginRight: '10px' }}>Your location:</h4>
-                <button type="submit">Check Location</button>
-            </div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <h4 style={{ margin: 0, marginRight: "10px" }}>
+                        Your location:
+                    </h4>
+                    <button type="submit">Check Location</button>
+                </div>
                 <p>Latitude: {currentLocation[0]}</p>
                 <p>Longitude: {currentLocation[1]}</p>
             </div>
             <div>
-                <span>Distance to Targe: 2 miles</span>
+                <span>Distance to Target: 2 miles</span>
             </div>
             <div>
-                <span>Hint: go to the cornego to the cornego to the corner</span>
+                <span>Current Clue: {firstClue}</span>
                 {/* show one hint at a time */}
             </div>
         </div>
@@ -25,6 +34,7 @@ const Progress = ({ currentLocation }) => {
 
 Progress.propTypes = {
     currentLocation: PropTypes.arrayOf(PropTypes.number).isRequired,
+    firstClue: PropTypes.string.isRequired,
 };
 
 export default Progress;

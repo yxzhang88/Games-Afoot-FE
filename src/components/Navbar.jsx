@@ -30,7 +30,11 @@ const Navbar = () => {
     return (
         <header className="header">
             <div className="logo">
-                <img src={logo1} alt="logo" style={{ width: "40%", height: "auto" }} />
+                <img
+                    src={logo1}
+                    alt="logo"
+                    style={{ width: "40%", height: "auto" }}
+                />
             </div>
             <div className="menu">
                 <button onClick={toggleDropdown} className="menu-button">
