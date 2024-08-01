@@ -10,7 +10,7 @@
 /* Container for other content, occupying one-third of the content area */
 .other-content {
     flex: 1;
-    background-color: lightgray;
+    background-color: rgb(241, 230, 208);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
