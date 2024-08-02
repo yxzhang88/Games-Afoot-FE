@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import Instruction from "../components/Instruction";
 import "./App.css"; // General styles
 import AppContent from "../components/AppContent";
-import "../components/MapStyles.css"; // Map-specific styles
+import "../components/MapStyles.css";
 import "../components/AppContent.css"; // General styles
 
 const App = () => {
