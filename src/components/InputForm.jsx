@@ -75,7 +75,7 @@ function InputForm({ currentLocation, startGame }) {
                     <p>Latitude: {currentLocation[0]}</p>
                     <p>Longitude: {currentLocation[1]}</p>
                 </div>
-                <button onClick={startGame} type="submit">
+                <button onClick={handleSubmit} type="submit">
                     Start Game
                 </button>
                 {/* Add reset game button later */}
