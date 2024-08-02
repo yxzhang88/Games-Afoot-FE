@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-function InputForm({ currentLocation, startGame }) {
+function InputForm({ currentLocation }) {
     const [distance, setDistance] = useState("");
     const [numSites, setNumSites] = useState("");
     const [gameType, setGameType] = useState("");
@@ -25,6 +25,30 @@ function InputForm({ currentLocation, startGame }) {
             start_latitude: currentLocation[0].toString(),
             start_longitude: currentLocation[1].toString(),
         };
+
+        async function startGame() {
+            try {
+                const response = await fetch('https://97ebb744-0267-4d61-a0cd-f944de9f71ef.mock.pstmn.io/api/start-game', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(gameSelections),
+                });
+        
+                const result = await response.json();
+                console.log("Server Response:", result);
+        
+                if (result.success) {
+                    alert("Game started successfully!");
+                } else {
+                    alert("Error starting the game.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred while starting the game.");
+            }
+        }
 
         startGame(gameSelections);
     };

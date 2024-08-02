@@ -4,7 +4,6 @@ import Progress from "./Progress";
 import MapContainer from "./MapContainer";
 import "./MapStyles.css"; // Map-specific styles
 import "./AppContent.css"; // General styles
-import { fireEvent } from "@testing-library/react";
 
 // const kBaseUrl = import.meta.env.REACT_APP_BACKEND_URL;
 
