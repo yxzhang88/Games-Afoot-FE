@@ -43,8 +43,11 @@ const AppContent = () => {
     const [gameData, setGameData] = useState(null);
     const [firstClue, setFirstClue] = useState("");
     const [currentLocation, setCurrentLocation] = useState([0, 0]);
+    const [gameStarted, setGameStarted] = useState(false); // Track if the game has started
 
-    const updateLocation = (newLocation) => {
+    const updateLocation = (newLocation) =>
+    {
+        console.log("Updating location in AppContent:", newLocation);
         setCurrentLocation(newLocation);
     };
 
@@ -66,10 +69,27 @@ const AppContent = () => {
             var firstHint = gamePiece.locations[0].clues[0];
             setFirstClue(firstHint);
             setGameData(gamePiece);
+            setGameStarted(true); // Set gameStarted to true
+
+            // // Use Geolocation API to get the current location
+            // if (navigator.geolocation) {
+            //     navigator.geolocation.getCurrentPosition(
+            //         (position) => {
+            //             const { latitude, longitude } = position.coords;
+            //             updateLocation([latitude, longitude]);
+            //         },
+            //         (error) => {
+            //             console.error("Error getting geolocation: ", error);
+            //         }
+            //     );
+            // } else {
+            //     console.log("Geolocation is not supported by this browser.");
+            // }
         } else {
             console.log("gamePiece is empty");
         }
     };
+
     useEffect(() => {
         console.log("Game hint updated", firstClue);
     }, [firstClue]);
@@ -94,6 +114,8 @@ const AppContent = () => {
                         <Progress
                             currentLocation={currentLocation}
                             firstClue={firstClue}
+                            gameStarted={gameStarted}
+                            updateLocation={updateLocation}
                         />
                     </div>
                 </div>
