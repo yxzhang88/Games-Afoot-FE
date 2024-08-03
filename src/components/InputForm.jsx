@@ -43,6 +43,8 @@ function InputForm({ currentLocation, startGame }) {
                         <option value="1">1 mile</option>
                         <option value="3">3 miles</option>
                         <option value="5">5 miles</option>
+                        <option value="7">7 miles</option>
+                        <option value="10">10 miles</option>
                     </select>
                 </div>
                 <div>
@@ -56,6 +58,8 @@ function InputForm({ currentLocation, startGame }) {
                         <option value="1">1 site</option>
                         <option value="3">3 sites</option>
                         <option value="5">5 sites</option>
+                        <option value="7">7 sites</option>
+                        <option value="10">10 sites</option>
                     </select>
                 </div>
                 <div>

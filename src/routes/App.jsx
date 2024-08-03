@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AboutUs from "../components/AboutUs";
+import AboutGame from "../components/AboutGame";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Instruction from "../components/Instruction";
 import "./App.css"; // General styles
 import AppContent from "../components/AppContent";
-import "../components/MapStyles.css"; // Map-specific styles
+import "../components/MapStyles.css";
 import "../components/AppContent.css"; // General styles
 
 const App = () => {
@@ -22,7 +22,7 @@ const App = () => {
                             </div>
                         }
                     />
-                    <Route path="aboutus" element={<AboutUs />} />
+                    <Route path="aboutgame" element={<AboutGame />} />
                     <Route path="instruction" element={<Instruction />} />
                 </Routes>
             </div>
