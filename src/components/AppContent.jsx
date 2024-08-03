@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import InputForm from "./InputForm";
 import Progress from "./Progress";
 import MapContainer from "./MapContainer";
+import calculateDistance from "../utilityFunctions/calculateDistance";
 import "./MapStyles.css";
 import "./AppContent.css"; // General styles
 
@@ -33,23 +34,20 @@ const gamePiece = {
             longitude: "-122.4782",
             name: "San Francisco History Museum",
         },
+        {
+            clues: [
+                "A well-known landmark offering panoramic views of the city and the Bay Area.",
+                "It features an observation deck and is a popular spot for tourists.",
+                "Look for the tall tower with a revolving restaurant.",
+            ],
+            description:
+                "An iconic observation tower providing stunning views of San Francisco and its surroundings.",
+            id: 3,
+            latitude: "37.7749",
+            longitude: "-122.4194",
+            name: "Coit Tower",
+        },
     ],
-};
-
-const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const toRad = (value) => (value * Math.PI) / 180;
-
-    const R = 6371; // Radius of the Earth in kilometers
-    const dLat = toRad(lat2 - lat1);
-    const dLon = toRad(lon2 - lon1);
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRad(lat1)) *
-            Math.cos(toRad(lat2)) *
-            Math.sin(dLon / 2) *
-            Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // Distance in kilometers
 };
 
 const AppContent = () => {
@@ -151,7 +149,7 @@ const AppContent = () => {
         }
     };
 
-    // Function to set a mock location manually for testing
+    // Mock location manually for testing
     const setMockLocation = (lat, lon) => {
         setCurrentLocation([lat, lon]);
         checkProximity();
@@ -163,7 +161,7 @@ const AppContent = () => {
                 <div className="other-content">
                     <div className="user-input">
                         <InputForm
-                            getSelections={handleSelectionData}
+                            handleSelectionData={handleSelectionData}
                             currentLocation={currentLocation}
                             startGame={startGame}
                         />
@@ -176,6 +174,11 @@ const AppContent = () => {
                             onClick={() => setMockLocation(37.7375, -122.4782)}
                         >
                             Set Mock Location to San Francisco History Museum
+                        </button>
+                        <button
+                            onClick={() => setMockLocation(37.7749, -122.4194)}
+                        >
+                            Set Mock Location to Coit Tower
                         </button>
                     </div>
                     <div className="progress-tracking">

@@ -20,4 +20,5 @@ html,
   /* Ensure both sections take full width on mobile */
   padding: 20px;
   /* Ensure consistent padding */
+  height: 130px;
 }

@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AboutUs from "../components/AboutUs";
+import AboutGame from "../components/AboutGame";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Instruction from "../components/Instruction";
@@ -22,7 +22,7 @@ const App = () => {
                             </div>
                         }
                     />
-                    <Route path="aboutus" element={<AboutUs />} />
+                    <Route path="aboutgame" element={<AboutGame />} />
                     <Route path="instruction" element={<Instruction />} />
                 </Routes>
             </div>
