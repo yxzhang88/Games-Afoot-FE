@@ -17,6 +17,7 @@ html,
   box-sizing: border-box;
   /* Ensure padding is included in the width */
   width: 100%;
+  height: 70px; /* 设置固定高度 */
   /* Ensure both sections take full width on mobile */
   padding: 20px;
   /* Ensure consistent padding */

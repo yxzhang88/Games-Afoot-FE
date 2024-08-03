@@ -71,20 +71,6 @@ const AppContent = () => {
             setGameData(gamePiece);
             setGameStarted(true); // Set gameStarted to true
 
-            // // Use Geolocation API to get the current location
-            // if (navigator.geolocation) {
-            //     navigator.geolocation.getCurrentPosition(
-            //         (position) => {
-            //             const { latitude, longitude } = position.coords;
-            //             updateLocation([latitude, longitude]);
-            //         },
-            //         (error) => {
-            //             console.error("Error getting geolocation: ", error);
-            //         }
-            //     );
-            // } else {
-            //     console.log("Geolocation is not supported by this browser.");
-            // }
         } else {
             console.log("gamePiece is empty");
         }

@@ -19,21 +19,22 @@ const LocationMarker = ({ position }) => {
     });
 
     // Hardcoded target location and details
-    const targetPosition = [47.636719, -122.366706];
-    // test -122.371000
+    const targetPosition = [37.636719, -122.366706];
     const targetName = "Test Spot";
     const targetDetails = "This is a detailed description of the target spot.";
 
     // Destructure latitude and longitude from the position array
     const [latitude, longitude] = position;
 
+    // isCloseToTarget: This boolean variable will be true if the distance between the current 
+    // location and the target location is less than 0.1 kilometer, and false otherwise.
     const isCloseToTarget =
         calculateDistance(
             latitude,
             longitude,
             targetPosition[0],
             targetPosition[1]
-        ) < 0.1;
+        ) < 0.1;   // 0.1 represents the distance threshold in kilometers, 100 meters
 
     const markerRef = useRef(null);
 

@@ -42,30 +42,7 @@ const Progress = ({ firstClue, currentLocation, gameStarted, updateLocation }) =
     };
 
     console.log("CurrentLocation in Progress:", currentLocation);
-
-    // const handleCheckLocation = () =>
-    // {
-    //     if (navigator.geolocation)
-    //     {
-    //         navigator.geolocation.getCurrentPosition((position) =>
-    //         {
-    //             const { latitude, longitude } = position.coords;
-    //             updateLocation([latitude, longitude])
-    //         },
-    //             (error) =>
-    //             {
-    //                 console.error("Error getting geolocation: ", error);
-    //             }
-    //         ); 
-    //     } 
-    // }
-
-    // const handleCheckLocation = () => {
-    //     // Hardcoded location for testing purposes (simulating user movement)
-    //     const newLocation = [37.7749, -102.4194]; // Example coordinates for San Francisco
-    //     updateLocation(newLocation);
-    // };
-
+    
     console.log("Progress component:", {
         firstClue,
         currentLocation,
