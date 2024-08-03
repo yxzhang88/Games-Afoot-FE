@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import "./Navbar.css";
+import "./navbar.css";
 import { useState, useRef, useEffect } from "react";
 import logo1 from "../assets/logo1.png";
 
