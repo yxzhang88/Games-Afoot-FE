@@ -1,0 +1,77 @@
+/* Header section with flexbox layout to space out logo and dropdown menu */
+.header {
+    display: flex;
+    justify-content: space-between;
+    /* Space between logo and dropdown menu */
+    align-items: center;
+    /* Center items vertically */
+    padding: 10px;
+    /* Padding around the header content */
+    position: relative;
+    /* To position the dropdown relative to the header */
+    background-color: #F0D1C2;
+    /* Light background color for the header */
+    z-index: 20;
+    /* Ensure the header and its dropdown are above other content */
+}
+
+/* Menu button styling */
+.menu-button {
+    background-color: #655e5e;
+    /* Purple background color */
+    border: none;
+    /* Remove default border */
+    border-radius: 50%;
+    /* Make the button round */
+    width: 40px;
+    /* Set width */
+    height: 40px;
+    /* Set height */
+    color: white;
+    /* White icon color */
+    font-size: 24px;
+    /* Icon size */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+}
+
+/* Menu button and dropdown */
+.menu {
+    position: relative;
+    z-index: 30;
+    /* Ensure the menu and dropdown are above other content */
+}
+
+.dropdown-menu {
+    position: absolute;
+    /* Position absolutely to the menu button */
+    top: 100%;
+    /* Place the dropdown directly below the menu button */
+    right: 0;
+    /* Align to the right edge of the menu button */
+    background-color: white;
+    /* Background color of the dropdown */
+    border: 1px solid #ccc;
+    /* Border for the dropdown */
+    border-radius: 8px;
+    /* Rounded corners for the dropdown */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    /* Add a shadow for better visibility */
+    z-index: 40;
+    /* Ensure the dropdown is above other elements */
+    margin-top: 8px;
+    /* Add some space between the button and the dropdown */
+}
+
+.dropdown-item {
+    padding: 5px 25px;
+    /* Padding for each dropdown item */
+    cursor: pointer;
+    /* Cursor pointer on hover */
+
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+    /* Background color on hover */
+}
