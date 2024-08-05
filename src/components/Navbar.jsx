@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import logo1 from "../assets/logo1.png";
+import "./navbar.css";
 
 const Navbar = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -46,9 +47,6 @@ const Navbar = () => {
                         </div>
                         <div className="dropdown-item">
                             <NavLink to="/aboutgame">About Game</NavLink>
-                        </div>
-                        <div className="dropdown-item">
-                            <NavLink to="/instruction">Instruction</NavLink>
                         </div>
                     </div>
                 )}
