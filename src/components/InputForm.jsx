@@ -6,18 +6,41 @@ function InputForm({ currentLocation, startGame }) {
     const [numSites, setNumSites] = useState("");
     const [gameType, setGameType] = useState("");
 
+    const isPositiveNum = (value) => /^[1-9]\d*$/.test(value);
+    const isNonEmptyString = (value) => value.trim().length > 0;
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!distance || !numSites || !gameType) {
+            alert("Please enter all options");
+            return;
+        }
+
+        if (!isPositiveNum(distance) || Number(distance) > 99) {
+            alert(
+                "Please enter a valid positive number for distance up to 99 miles"
+            );
+            return;
+        }
+
+        if (!isPositiveNum(numSites)) {
+            alert("Please enter a valid postive number for sites");
+            return;
+        }
+
+        if (!isNonEmptyString(gameType)) {
+            alert("Please enter a valid game type");
+            return;
+        }
+
         console.log("Selections from inputform:", {
             currentLocation,
             distance,
             numSites,
             gameType,
         });
-        if (!distance || !numSites || !gameType) {
-            alert("Please select all options");
-            return;
-        }
+
         const gameSelections = {
             distance_in_miles: distance.toString(),
             games_type: gameType.toLowerCase(),
@@ -30,25 +53,18 @@ function InputForm({ currentLocation, startGame }) {
     };
     return (
         <div className="input-form">
-            <h2>Select From Below</h2>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="distance">Distance:</label>
-                    <select
+                    <input
+                        type="text"
                         id="distance"
                         value={distance}
                         onChange={(e) => setDistance(e.target.value)}
-                    >
-                        <option value="">Select Distance</option>
-                        <option value="1">1 mile</option>
-                        <option value="3">3 miles</option>
-                        <option value="5">5 miles</option>
-                        <option value="7">7 miles</option>
-                        <option value="10">10 miles</option>
-                    </select>
+                    ></input>
                 </div>
                 <div>
-                    <label htmlFor="numSites">Num of Sites:</label>
+                    <label htmlFor="numSites">Number of Sites:</label>
                     <select
                         id="numSites"
                         value={numSites}
@@ -64,16 +80,12 @@ function InputForm({ currentLocation, startGame }) {
                 </div>
                 <div>
                     <label htmlFor="gameType">Game Type:</label>
-                    <select
+                    <input
+                        type="text"
                         id="gameType"
                         value={gameType}
                         onChange={(e) => setGameType(e.target.value)}
-                    >
-                        <option value="">Select Game Type</option>
-                        <option value="type1">Historical Sites</option>
-                        <option value="type2">Museums</option>
-                        <option value="type3">Famous Landmarks</option>
-                    </select>
+                    ></input>
                 </div>
                 <div>
                     <p>Latitude: {currentLocation[0]}</p>
