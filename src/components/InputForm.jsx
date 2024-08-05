@@ -15,7 +15,7 @@ function InputForm({ currentLocation, startGame }) {
             gameType,
         });
         if (!distance || !numSites || !gameType) {
-            alert("Please select all options");
+            alert("Please fill in all fields");
             return;
         }
         const gameSelections = {
@@ -28,61 +28,48 @@ function InputForm({ currentLocation, startGame }) {
 
         startGame(gameSelections);
     };
+
     return (
         <div className="input-form">
-            <h2>Select From Below</h2>
+            <h2>Enter Details Below</h2>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="distance">Distance:</label>
-                    <select
+                    <label htmlFor="distance">Distance (in miles):</label>
+                    <input
+                        type="text"
                         id="distance"
                         value={distance}
                         onChange={(e) => setDistance(e.target.value)}
-                    >
-                        <option value="">Select Distance</option>
-                        <option value="1">1 mile</option>
-                        <option value="3">3 miles</option>
-                        <option value="5">5 miles</option>
-                        <option value="7">7 miles</option>
-                        <option value="10">10 miles</option>
-                    </select>
+                        placeholder="Enter distance"
+                    />
                 </div>
                 <div>
-                    <label htmlFor="numSites">Num of Sites:</label>
-                    <select
+                    <label htmlFor="numSites">Number of Sites:</label>
+                    <input
+                        type="text"
                         id="numSites"
                         value={numSites}
                         onChange={(e) => setNumSites(e.target.value)}
-                    >
-                        <option value="">Select Number of Sites</option>
-                        <option value="1">1 site</option>
-                        <option value="3">3 sites</option>
-                        <option value="5">5 sites</option>
-                        <option value="7">7 sites</option>
-                        <option value="10">10 sites</option>
-                    </select>
+                        placeholder="Enter number of sites"
+                    />
                 </div>
                 <div>
                     <label htmlFor="gameType">Game Type:</label>
-                    <select
+                    <input
+                        type="text"
                         id="gameType"
                         value={gameType}
                         onChange={(e) => setGameType(e.target.value)}
-                    >
-                        <option value="">Select Game Type</option>
-                        <option value="type1">Historical Sites</option>
-                        <option value="type2">Museums</option>
-                        <option value="type3">Famous Landmarks</option>
-                    </select>
+                        placeholder="Enter game type"
+                    />
                 </div>
                 <div>
                     <p>Latitude: {currentLocation[0]}</p>
                     <p>Longitude: {currentLocation[1]}</p>
                 </div>
-                <button onClick={handleSubmit} type="submit">
+                <button type="submit">
                     Start Game
                 </button>
-                {/* Add reset game button later */}
             </form>
         </div>
     );
