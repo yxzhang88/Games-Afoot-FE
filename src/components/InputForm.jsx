@@ -5,6 +5,28 @@ function InputForm({ currentLocation, startGame }) {
     const [distance, setDistance] = useState("");
     const [numSites, setNumSites] = useState("");
     const [gameType, setGameType] = useState("");
+    const [distanceError, setDistanceError] = useState("");
+    const [gameTypeError, setGameTypeError] = useState("");
+
+    const handleDistanceChange = (e) => {
+        const value = e.target.value;
+        if (/^\d{0,2}$/.test(value)) { // Allow only up to two digits
+            setDistance(value);
+            setDistanceError(""); // Clear error if valid
+        } else {
+            setDistanceError("Please enter a valid number (up to 99 miles).");
+        }
+    };
+
+    const handleGameTypeChange = (e) => {
+        const value = e.target.value;
+        if (/^[a-zA-Z\s]*$/.test(value)) { // Allow only letters and spaces
+            setGameType(value);
+            setGameTypeError(""); // Clear error if valid
+        } else {
+            setGameTypeError("Please enter only letters and spaces for game type.");
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -39,19 +61,26 @@ function InputForm({ currentLocation, startGame }) {
                         type="text"
                         id="distance"
                         value={distance}
-                        onChange={(e) => setDistance(e.target.value)}
+                        onChange={handleDistanceChange}
                         placeholder="Enter distance"
+                        maxLength="2"
                     />
+                    {distanceError && <p style={{ color: 'red' }}>{distanceError}</p>}
                 </div>
                 <div>
                     <label htmlFor="numSites">Number of Sites:</label>
-                    <input
-                        type="text"
+                    <select
                         id="numSites"
                         value={numSites}
                         onChange={(e) => setNumSites(e.target.value)}
-                        placeholder="Enter number of sites"
-                    />
+                    >
+                        <option value="">Select Number of Sites</option>
+                        {[...Array(10).keys()].map(num => (
+                            <option key={num + 1} value={num + 1}>
+                                {num + 1} site{num > 0 ? 's' : ''}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <div>
                     <label htmlFor="gameType">Game Type:</label>
@@ -59,9 +88,10 @@ function InputForm({ currentLocation, startGame }) {
                         type="text"
                         id="gameType"
                         value={gameType}
-                        onChange={(e) => setGameType(e.target.value)}
+                        onChange={handleGameTypeChange}
                         placeholder="Enter game type"
                     />
+                    {gameTypeError && <p style={{ color: 'red' }}>{gameTypeError}</p>}
                 </div>
                 <div>
                     <p>Latitude: {currentLocation[0]}</p>
