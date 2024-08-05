@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import InputForm from "./InputForm";
 import Progress from "./Progress";
 import MapContainer from "./MapContainer";
@@ -68,10 +69,10 @@ const AppContent = () => {
     const handleSelectionData = (gameSelections) => {
         setSelectionData(gameSelections);
     };
+
     const checkProximity = () => {
         if (gameData) {
-            const { latitude, longitude } =
-                gameData.locations[currentLocationIndex];
+            const { latitude, longitude } = gameData.locations[currentLocationIndex];
             const distance = calculateDistance(
                 currentLocation[0],
                 currentLocation[1],
@@ -112,18 +113,28 @@ const AppContent = () => {
         }
     };
 
-    const handleStartGame = (gamePiece) => {
-        if (
-            gamePiece &&
-            gamePiece.locations &&
-            gamePiece.locations.length > 0
-        ) {
-            setGameData(gamePiece);
-            setCurrentLocationIndex(0);
-            setCurrentClueIndex(0);
-            setCurrentClue(gamePiece.locations[0].clues[0]);
-        } else {
-            console.log("gamePiece is empty");
+    const handleStartGame = async (selectionData) => {
+        try {
+            if (selectionData) {
+                // Post to create hunt
+                const response = await axios.post("https://games-afoot.onrender.com/hunts", {
+                    ...selectionData,
+                    startLatitude: currentLocation[0],
+                    startLongitude: currentLocation[1],
+                });
+
+                // Handle the hunt response
+                const huntId = response.data.id;
+                const locationsResponse = await axios.get(`https://games-afoot.onrender.com/hunts/${huntId}/locations`);
+                const locationsData = locationsResponse.data;
+
+                // Update game data with the fetched locations
+                handleStartGame({ ...gamePiece, locations: locationsData });
+            } else {
+                console.log("Selection data is empty");
+            }
+        } catch (error) {
+            console.error("Error starting game:", error);
         }
     };
 
@@ -144,7 +155,7 @@ const AppContent = () => {
     const startGame = (selectionData) => {
         if (selectionData && gamePiece) {
             handleSelectionData(selectionData);
-            handleStartGame(gamePiece);
+            handleStartGame(selectionData); // Pass selectionData to the async function
         } else {
             console.log("Selection data or game piece is empty");
         }
