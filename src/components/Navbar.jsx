@@ -48,9 +48,6 @@ const Navbar = () => {
                         <div className="dropdown-item">
                             <NavLink to="/aboutgame">About Game</NavLink>
                         </div>
-                        <div className="dropdown-item">
-                            <NavLink to="/instruction">Instruction</NavLink>
-                        </div>
                     </div>
                 )}
             </div>
