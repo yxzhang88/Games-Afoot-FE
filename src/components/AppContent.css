@@ -2,9 +2,7 @@
 .content {
     display: flex;
     flex: 1;
-    /* Take up the remaining space */
     height: 100%;
-    /* Make sure content takes the full available height */
 }
 
 /* Container for other content, occupying one-third of the content area */
@@ -20,32 +18,64 @@
     overflow: auto;
 }
 
-/* Style for individual divs inside other-content */
 .other-content div {
     margin-bottom: 5px;
-    /* Add spacing between elements */
     width: auto;
 }
 
 .user-input {
-    flex: 1;
-    padding: 10px;
-    /* border: 1px solid rgb(0, 0, 0); */
+    transition: height 0.3s ease;
+    overflow: hidden;
+    margin-top: 20px;
 }
 
+.user-input.collapsed {
+    height: 0;
+}
 
-.instruction-icon {
-    margin-left: auto;
-    /* Pushes the icon to the right */
+.user-input.expanded {
+    max-height: 1000px;
+}
+
+.expand-collapse-button {
     display: flex;
-    align-items: end;
-    justify-content: right;
+    align-items: center;
+    justify-content: center;
+    /* padding: 10px; */
+    border-radius: 5px; /* Optional: rounded corners for the button */
+    background: #fff; /* Ensure button background is white or any desired color */
+    font-size: 15px;
+    outline: none; /* Remove default focus outline */
+}
+
+.expand-collapse-button::before {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 6px 10px 6px; 
+    border-color: transparent transparent #000 transparent; 
+    margin-left: 8px; 
+}
+
+.expand-collapse-button.collapsed::before {
+    margin-left: 0;
+    margin-right: 3px;
+    border-width: 0 6px 10px 6px;
+    border-color: transparent transparent #000 transparent; /* Downward triangle */
+}
+
+.expand-collapse-button.expanded::before {
+    margin-left: 0;
+    margin-right: 3px;
+    border-width: 10px 6px 0 6px;
+    border-color: #000 transparent transparent transparent; /* Upward triangle */
 }
 
 .progress-tracking {
     flex: 2;
     padding: 0px;
-    /* border: 1px solid rgb(0, 0, 0); */
 }
 
 

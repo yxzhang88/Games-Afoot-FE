@@ -10,6 +10,16 @@
     /* Ensure it is below the dropdown menu */
 }
 
+.instruction-icon {
+    position: absolute;
+    top: 100px; 
+    left: 10px; 
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 5px; 
+    border-radius: 5px; 
+    z-index: 1000; 
+}
+
 /* Mobile-specific styles */
 @media (max-width: 768px) {
     .map-container {

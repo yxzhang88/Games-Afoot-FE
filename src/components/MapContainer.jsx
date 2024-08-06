@@ -9,6 +9,7 @@ import PropTypes from "prop-types"; // Import PropTypes for prop validation
 import LocationMarker from "./LocationMarker"; // LocationMarker component
 import L from "leaflet"; // Leaflet for default icon fixes
 import { useState, useEffect } from "react";
+import InstructionPopUp from "./InstructionPopUp";
 
 // Fix default icon issues
 delete L.Icon.Default.prototype._getIconUrl;
@@ -79,9 +80,10 @@ const MapContainer = ({ updateLocation }) => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
             <MapCenter position={position} />{" "}
-            {/* Render the MapCenter component to adjust map view */}
             <LocationMarker position={position} />{" "}
-            {/* Render the LocationMarker component with the current position */}
+            <div className="instruction-icon">
+                <InstructionPopUp />
+            </div>
         </LeafletMapContainer>
     );
 };
