@@ -6,7 +6,6 @@ import MapContainer from "./MapContainer";
 import calculateDistance from "../utilityFunctions/calculateDistance";
 import "./MapStyles.css";
 import "./AppContent.css"; // General styles
-import InstructionPopUp from "./InstructionPopUp";
 
 const AppContent = () => {
     const [selectionData, setSelectionData] = useState(null);
@@ -171,9 +170,6 @@ const AppContent = () => {
             <div className="content">
                 <div className="other-content">
                     <div className="user-input">
-                        <div className="instruction-icon">
-                            <InstructionPopUp />
-                        </div>
                         <InputForm
                             handleSelectionData={handleSelectionData}
                             currentLocation={currentLocation}
