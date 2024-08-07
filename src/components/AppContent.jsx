@@ -59,12 +59,6 @@ const AppContent = () => {
     const [currentClue, setCurrentClue] = useState("");
     const [distanceToTarget, setDistanceToTarget] = useState(0);
     const [gameComplete, setGameComplete] = useState(false);
-    const [isUserInputCollapsed, setIsUserInputCollapsed] = useState(true);
-
-    const toggleUserInput = () =>
-    {
-        setIsUserInputCollapsed(prevState => !prevState);
-    };
 
     const updateLocation = (newLocation) => {
         setCurrentLocation(newLocation);
@@ -165,13 +159,7 @@ const AppContent = () => {
         <div>
             <div className="content">
                 <div className="other-content">
-                    <button
-                        className={`expand-collapse-button ${isUserInputCollapsed ? "collapsed" : "expanded"}`}
-                        onClick={toggleUserInput}
-                    >
-                        {isUserInputCollapsed ? "Expand" : "Collapse"} filter form
-                    </button>
-                    <div className={`user-input ${isUserInputCollapsed ? 'collapsed' : 'expanded'}`}>
+                    <div className="user-input">
                         <InputForm
                             handleSelectionData={handleSelectionData}
                             currentLocation={currentLocation}

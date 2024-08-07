@@ -29,56 +29,37 @@
     margin-top: 20px;
 }
 
-.user-input.collapsed {
-    height: 0;
+.input-form {
+    margin: 10px;
 }
 
-.user-input.expanded {
-    max-height: 1000px;
-}
-
-.expand-collapse-button {
+.toggle-header {
+    cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center;
-    /* padding: 10px; */
-    border-radius: 5px; /* Optional: rounded corners for the button */
-    background: #fff; /* Ensure button background is white or any desired color */
-    font-size: 15px;
-    outline: none; /* Remove default focus outline */
 }
 
-.expand-collapse-button::before {
-    content: "";
+.arrow {
     display: inline-block;
     width: 0;
     height: 0;
-    border-style: solid;
-    border-width: 0 6px 10px 6px; 
-    border-color: transparent transparent #000 transparent; 
-    margin-left: 8px; 
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    margin-left: 10px;
 }
 
-.expand-collapse-button.collapsed::before {
-    margin-left: 0;
-    margin-right: 3px;
-    border-width: 0 6px 10px 6px;
-    border-color: transparent transparent #000 transparent; /* Downward triangle */
+.arrow.up {
+    border-bottom: 10px solid #000;
 }
 
-.expand-collapse-button.expanded::before {
-    margin-left: 0;
-    margin-right: 3px;
-    border-width: 10px 6px 0 6px;
-    border-color: #000 transparent transparent transparent; /* Upward triangle */
+.arrow.down {
+    border-top: 10px solid #000;
 }
 
 .progress-tracking {
     flex: 2;
-    padding: 0px;
+    padding: 3px;
 }
-
-
 
 /* Mobile-specific styles */
 @media (max-width: 768px) {
