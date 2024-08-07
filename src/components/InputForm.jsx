@@ -5,32 +5,38 @@ function InputForm({ currentLocation, startGame }) {
     const [distance, setDistance] = useState("");
     const [numSites, setNumSites] = useState("");
     const [gameType, setGameType] = useState("");
+    const [distanceError, setDistanceError] = useState("");
+    const [gameTypeError, setGameTypeError] = useState("");
 
-    const isPositiveNum = (value) => /^[1-9]\d*$/.test(value);
-    const isNonEmptyString = (value) => value.trim().length > 0;
+    const handleDistanceValidation = (e) => {
+        const value = e.target.value;
+        if (/^\d{0,2}$/.test(value)) {
+            // Allow only up to two digits
+            setDistance(value);
+            setDistanceError(""); // Clear error if valid
+        } else {
+            setDistanceError("Please enter a valid number (up to 99 miles).");
+        }
+    };
+
+    const handleGameTypeValidation = (e) => {
+        const value = e.target.value;
+        if (/^[a-zA-Z\s]*$/.test(value)) {
+            // Allow only letters and spaces
+            setGameType(value);
+            setGameTypeError(""); // Clear error if valid
+        } else {
+            setGameTypeError(
+                "Please enter only letters and spaces for game type."
+            );
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!distance || !numSites || !gameType) {
             alert("Please enter all options");
-            return;
-        }
-
-        if (!isPositiveNum(distance) || Number(distance) > 99) {
-            alert(
-                "Please enter a valid positive number for distance up to 99 miles"
-            );
-            return;
-        }
-
-        if (!isPositiveNum(numSites)) {
-            alert("Please enter a valid postive number for sites");
-            return;
-        }
-
-        if (!isNonEmptyString(gameType)) {
-            alert("Please enter a valid game type");
             return;
         }
 
@@ -42,26 +48,31 @@ function InputForm({ currentLocation, startGame }) {
         });
 
         const gameSelections = {
-            distance_in_miles: distance.toString(),
-            games_type: gameType.toLowerCase(),
-            num_of_sites: numSites.toString(),
-            start_latitude: currentLocation[0].toString(),
-            start_longitude: currentLocation[1].toString(),
+            distance: distance.toString(),
+            gameType: gameType.toLowerCase(),
+            numSites: numSites.toString(),
+            startLatitude: currentLocation[0].toString(),
+            startLongitude: currentLocation[1].toString(),
         };
-
         startGame(gameSelections);
     };
     return (
         <div className="input-form">
+            <h2>Enter Details Below</h2>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="distance">Distance:</label>
+                    <label htmlFor="distance">Distance (in miles):</label>
                     <input
                         type="text"
                         id="distance"
                         value={distance}
-                        onChange={(e) => setDistance(e.target.value)}
-                    ></input>
+                        onChange={handleDistanceValidation}
+                        placeholder="Enter distance"
+                        maxLength="2"
+                    />
+                    {distanceError && (
+                        <p style={{ color: "red" }}>{distanceError}</p>
+                    )}
                 </div>
                 <div>
                     <label htmlFor="numSites">Number of Sites:</label>
@@ -71,11 +82,11 @@ function InputForm({ currentLocation, startGame }) {
                         onChange={(e) => setNumSites(e.target.value)}
                     >
                         <option value="">Select Number of Sites</option>
-                        <option value="1">1 site</option>
-                        <option value="3">3 sites</option>
-                        <option value="5">5 sites</option>
-                        <option value="7">7 sites</option>
-                        <option value="10">10 sites</option>
+                        {[...Array(10).keys()].map((num) => (
+                            <option key={num + 1} value={num + 1}>
+                                {num + 1} site{num > 0 ? "s" : ""}
+                            </option>
+                        ))}
                     </select>
                 </div>
                 <div>
@@ -84,16 +95,18 @@ function InputForm({ currentLocation, startGame }) {
                         type="text"
                         id="gameType"
                         value={gameType}
-                        onChange={(e) => setGameType(e.target.value)}
-                    ></input>
+                        onChange={handleGameTypeValidation}
+                        placeholder="Enter game type"
+                    />
+                    {gameTypeError && (
+                        <p style={{ color: "red" }}>{gameTypeError}</p>
+                    )}
                 </div>
                 <div>
                     <p>Latitude: {currentLocation[0]}</p>
                     <p>Longitude: {currentLocation[1]}</p>
                 </div>
-                <button onClick={handleSubmit} type="submit">
-                    Start Game
-                </button>
+                <button type="submit">Start Game</button>
                 {/* Add reset game button later */}
             </form>
         </div>
