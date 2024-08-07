@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import InputForm from "./InputForm";
 import Progress from "./Progress";
 import MapContainer from "./MapContainer";
@@ -111,20 +112,48 @@ const AppContent = () => {
         }
     };
 
-    const handleStartGame = (gamePiece) => {
-        if (
-            gamePiece &&
-            gamePiece.locations &&
-            gamePiece.locations.length > 0
-        ) {
-            setGameData(gamePiece);
-            setCurrentLocationIndex(0);
-            setCurrentClueIndex(0);
-            setCurrentClue(gamePiece.locations[0].clues[0]);
+    const handleStartGame = async (selectionData) => {
+        try {
+            if (selectionData) {
+                // Log the data being sent to the backend
+                console.log("Sending data to create hunt:", {
+                    distance: selectionData.distance_in_miles,
+                    numSites: selectionData.num_of_sites,
+                    gameType: selectionData.games_type,
+                    startLatitude: selectionData.start_latitude,
+                    startLongitude: selectionData.start_longitude,
+                });
+    
+                // Post to create hunt with customer input
+                const response = await axios.post("https://games-afoot.onrender.com/hunts", {
+                    distance: selectionData.distance_in_miles,
+                    numSites: selectionData.num_of_sites,
+                    gameType: selectionData.games_type,
+                    startLatitude: selectionData.start_latitude,
+                    startLongitude: selectionData.start_longitude,
+                });
+
+                // Handle the hunt response
+                const huntId = response.data.id;
+                console.log("Hunt created with ID:", huntId);
+                
+                // Fetch locations data
+                const locationsResponse = await axios.get(`https://games-afoot.onrender.com/hunts/${huntId}/locations`);
+                const locationsData = locationsResponse.data;
+                console.log("Received locations data:", locationsData);
+
+                // Update game data with the fetched locations
+            setGameData({
+                ...selectionData,
+                locations: locationsData,
+            });
         } else {
-            console.log("gamePiece is empty");
+            console.log("Selection data is empty");
         }
-    };
+    } catch (error) {
+        console.error("Error starting game:", error);
+    }
+};
 
     useEffect(() => {
         console.log("game piece has been updated:", gameData);

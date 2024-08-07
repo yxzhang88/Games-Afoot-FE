@@ -37,19 +37,41 @@ function InputForm({ currentLocation, startGame }) {
             numSites,
             gameType,
         });
-        if (!distance || !numSites || !gameType) {
+        if (!distance || !numSites || !gameType || !currentLocation || currentLocation.length !== 2) {
             alert("Please fill in all fields");
             return;
         }
         const gameSelections = {
-            distance_in_miles: distance.toString(),
-            games_type: gameType.toLowerCase(),
-            num_of_sites: numSites.toString(),
-            start_latitude: currentLocation[0].toString(),
-            start_longitude: currentLocation[1].toString(),
+            startLatitude: currentLocation[0].toString(),   
+            startLongitude: currentLocation[1].toString(),  
+            distance: distance.toString(),                 
+            numSites: numSites.toString(),                  
+            gameType: gameType.toLowerCase(),  
         };
 
-        startGame(gameSelections);
+        console.log("Game selections to be sent:", gameSelections); 
+
+        try {
+            const response = await fetch('https://games-afoot.onrender.com/hunts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(gameSelections),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log("Hunt created successfully:", result);
+                // Handle success (e.g., redirect, update UI)
+            } else {
+                console.error("Error creating hunt:", await response.text());
+                // Handle error
+            }
+        } catch (error) {
+            console.error("Network error:", error);
+            // Handle network error
+        }
     };
 
     return (
