@@ -80,10 +80,10 @@ const AppContent = () => {
                     "https://games-afoot.onrender.com/hunts",
                     {
                         ...selectionData,
-                        startLatitude: parseFloat(selectionData.startLatitude),
-                        startLongitude: parseFloat(
-                            selectionData.startLongitude
-                        ),
+                        // startLatitude: parseFloat(selectionData.startLatitude),
+                        // startLongitude: parseFloat(
+                        //     selectionData.startLongitude
+                        // ),
                     }
                 );
 
@@ -161,10 +161,10 @@ const AppContent = () => {
     };
 
     // Mock location manually for testing
-    const setMockLocation = (lat, lon) => {
-        setCurrentLocation([lat, lon]);
-        checkProximity();
-    };
+    // const setMockLocation = (lat, lon) => {
+    //     setCurrentLocation([lat, lon]);
+    //     checkProximity();
+    // };
 
     return (
         <div>
@@ -179,7 +179,7 @@ const AppContent = () => {
                             currentLocation={currentLocation}
                             startGame={startGame}
                         />
-                        <button
+                        {/* <button
                             onClick={() => setMockLocation(37.7353, -122.4767)}
                         >
                             Set Mock Location to Golden Gate Park
@@ -193,7 +193,7 @@ const AppContent = () => {
                             onClick={() => setMockLocation(37.7749, -122.4194)}
                         >
                             Set Mock Location to Coit Tower
-                        </button>
+                        </button> */}
                     </div>
                     <div className="progress-tracking">
                         <Progress
