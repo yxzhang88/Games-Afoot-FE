@@ -29,6 +29,7 @@ function InputForm({ currentLocation, startGame }) {
         }
     };
 
+    // step 1: Receive User Input and Create Hunt
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("Selections from inputform:", {
@@ -37,7 +38,7 @@ function InputForm({ currentLocation, startGame }) {
             numSites,
             gameType,
         });
-        if (!distance || !numSites || !gameType || !currentLocation || currentLocation.length !== 2) {
+        if (!distance || !numSites || !gameType) {
             alert("Please fill in all fields");
             return;
         }
@@ -60,20 +61,55 @@ function InputForm({ currentLocation, startGame }) {
                 body: JSON.stringify(gameSelections),
             });
 
-            if (response.ok) {
-                const result = await response.json();
-                console.log("Hunt created successfully:", result);
-                // Handle success (e.g., redirect, update UI)
-            } else {
-                console.error("Error creating hunt:", await response.text());
-                // Handle error
+            if (!response.ok) {
+                throw new Error('Failed to create hunt');
             }
+    
+            const huntData = await response.json();
+            console.log('Hunt created with ID:', huntData.id);
+            
+            await generateLocations(huntData.id);
         } catch (error) {
             console.error("Network error:", error);
-            // Handle network error
         }
     };
 
+    const generateLocations = async (huntId) => {
+        try {
+            const response = await fetch(`https://games-afoot.onrender.com/hunts/${huntId}/generate_locations`, {
+                method: 'POST',
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to generate locations');
+            }
+    
+            console.log('Locations generated for hunt ID:', huntId);
+    
+            // Step 2: Generate Location Data
+            await fetchLocations(huntId);
+        } catch (error) {
+            console.error('Error generating locations:', error);
+        }
+    };
+
+    const fetchLocations = async (huntId) => {
+        try {
+            const response = await fetch(`https://games-afoot.onrender.com/hunts/${huntId}/locations`);
+    
+            if (!response.ok) {
+                throw new Error('Failed to fetch locations');
+            }
+    
+            const locationsData = await response.json();
+            console.log('Fetched locations for hunt ID:', huntId, locationsData);
+    
+            // step 3: get locations by id; 
+        } catch (error) {
+            console.error('Error fetching locations:', error);
+        }
+    };
+    
     return (
         <div className="input-form">
             <h2 onClick={() => setIsFormVisible(!isFormVisible)} className="toggle-header">
