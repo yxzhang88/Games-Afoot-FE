@@ -9,9 +9,10 @@ function InputForm({ currentLocation, startGame }) {
     const [gameTypeError, setGameTypeError] = useState("");
     const [isFormVisible, setIsFormVisible] = useState(true); // State to manage visibility
 
-    const handleDistanceChange = (e) => {
+    const handleDistanceValidation = (e) => {
         const value = e.target.value;
-        if (/^\d{0,2}$/.test(value)) { // Allow only up to two digits
+        if (/^\d{0,2}$/.test(value)) {
+            // Allow only up to two digits
             setDistance(value);
             setDistanceError(""); // Clear error if valid
         } else {
@@ -19,13 +20,16 @@ function InputForm({ currentLocation, startGame }) {
         }
     };
 
-    const handleGameTypeChange = (e) => {
+    const handleGameTypeValidation = (e) => {
         const value = e.target.value;
-        if (/^[a-zA-Z\s]*$/.test(value)) { // Allow only letters and spaces
+        if (/^[a-zA-Z\s]*$/.test(value)) {
+            // Allow only letters and spaces
             setGameType(value);
             setGameTypeError(""); // Clear error if valid
         } else {
-            setGameTypeError("Please enter only letters and spaces for game type.");
+            setGameTypeError(
+                "Please enter only letters and spaces for game type."
+            );
         }
     };
 
@@ -42,21 +46,25 @@ function InputForm({ currentLocation, startGame }) {
             return;
         }
         const gameSelections = {
-            distance_in_miles: distance.toString(),
-            games_type: gameType.toLowerCase(),
-            num_of_sites: numSites.toString(),
-            start_latitude: currentLocation[0].toString(),
-            start_longitude: currentLocation[1].toString(),
+            distance: distance.toString(),
+            gameType: gameType.toLowerCase(),
+            numSites: numSites.toString(),
+            startLatitude: currentLocation[0].toString(),
+            startLongitude: currentLocation[1].toString(),
         };
-
         startGame(gameSelections);
     };
 
     return (
         <div className="input-form">
-            <h2 onClick={() => setIsFormVisible(!isFormVisible)} className="toggle-header">
+            <h2
+                onClick={() => setIsFormVisible(!isFormVisible)}
+                className="toggle-header"
+            >
                 Enter Details Below
-                <span className={`arrow ${isFormVisible ? "up" : "down"}`}></span>
+                <span
+                    className={`arrow ${isFormVisible ? "up" : "down"}`}
+                ></span>
             </h2>
             {isFormVisible && (
                 <form onSubmit={handleSubmit}>
@@ -66,11 +74,13 @@ function InputForm({ currentLocation, startGame }) {
                             type="text"
                             id="distance"
                             value={distance}
-                            onChange={handleDistanceChange}
+                            onChange={handleDistanceValidation}
                             placeholder="Enter distance"
                             maxLength="2"
                         />
-                        {distanceError && <p style={{ color: 'red' }}>{distanceError}</p>}
+                        {distanceError && (
+                            <p style={{ color: "red" }}>{distanceError}</p>
+                        )}
                     </div>
                     <div>
                         <label htmlFor="numSites">Number of Sites:</label>
@@ -80,9 +90,9 @@ function InputForm({ currentLocation, startGame }) {
                             onChange={(e) => setNumSites(e.target.value)}
                         >
                             <option value="">Select Number of Sites</option>
-                            {[...Array(10).keys()].map(num => (
+                            {[...Array(10).keys()].map((num) => (
                                 <option key={num + 1} value={num + 1}>
-                                    {num + 1} site{num > 0 ? 's' : ''}
+                                    {num + 1} site{num > 0 ? "s" : ""}
                                 </option>
                             ))}
                         </select>
@@ -93,18 +103,19 @@ function InputForm({ currentLocation, startGame }) {
                             type="text"
                             id="gameType"
                             value={gameType}
-                            onChange={handleGameTypeChange}
+                            onChange={handleGameTypeValidation}
                             placeholder="Enter game type"
                         />
-                        {gameTypeError && <p style={{ color: 'red' }}>{gameTypeError}</p>}
+                        {gameTypeError && (
+                            <p style={{ color: "red" }}>{gameTypeError}</p>
+                        )}
                     </div>
                     <div>
                         <p>Latitude: {currentLocation[0]}</p>
                         <p>Longitude: {currentLocation[1]}</p>
                     </div>
-                    <button type="submit">
-                        Start Game
-                    </button>
+                    <button type="submit">Start Game</button>
+                    {/* Add reset game button later */}
                 </form>
             )}
         </div>

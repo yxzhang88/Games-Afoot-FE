@@ -1,54 +1,11 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import InputForm from "./InputForm";
 import Progress from "./Progress";
 import MapContainer from "./MapContainer";
 import calculateDistance from "../utilityFunctions/calculateDistance";
 import "./MapStyles.css";
 import "./AppContent.css"; // General styles
-
-const gamePiece = {
-    locations: [
-        {
-            clues: [
-                "A historic park featuring a beautiful garden and scenic views of San Francisco Bay.",
-                "It includes walking trails, a pond, and several historical monuments.",
-                "Look for the large gazebo and picnic areas.",
-            ],
-            description:
-                "A popular park in San Francisco known for its picturesque landscapes and family-friendly environment.",
-            id: 1,
-            latitude: "37.7353",
-            longitude: "-122.4767",
-            name: "Golden Gate Park",
-        },
-        {
-            clues: [
-                "This historic site is known for its role in the early development of San Francisco.",
-                "It features a museum with exhibits on local history and a preserved 19th-century building.",
-                "Look for the old brick building with a clock tower.",
-            ],
-            description:
-                "A local museum offering insights into the early history of San Francisco and its development.",
-            id: 2,
-            latitude: "37.7375",
-            longitude: "-122.4782",
-            name: "San Francisco History Museum",
-        },
-        {
-            clues: [
-                "A well-known landmark offering panoramic views of the city and the Bay Area.",
-                "It features an observation deck and is a popular spot for tourists.",
-                "Look for the tall tower with a revolving restaurant.",
-            ],
-            description:
-                "An iconic observation tower providing stunning views of San Francisco and its surroundings.",
-            id: 3,
-            latitude: "37.7749",
-            longitude: "-122.4194",
-            name: "Coit Tower",
-        },
-    ],
-};
 
 const AppContent = () => {
     const [selectionData, setSelectionData] = useState(null);
@@ -66,7 +23,9 @@ const AppContent = () => {
 
     const handleSelectionData = (gameSelections) => {
         setSelectionData(gameSelections);
+        console.log("Called handleSelectionData:", gameSelections);
     };
+
     const checkProximity = () => {
         if (gameData) {
             const { latitude, longitude } =
@@ -111,18 +70,69 @@ const AppContent = () => {
         }
     };
 
-    const handleStartGame = (gamePiece) => {
-        if (
-            gamePiece &&
-            gamePiece.locations &&
-            gamePiece.locations.length > 0
-        ) {
-            setGameData(gamePiece);
-            setCurrentLocationIndex(0);
-            setCurrentClueIndex(0);
-            setCurrentClue(gamePiece.locations[0].clues[0]);
-        } else {
-            console.log("gamePiece is empty");
+    const getGameData = async (selectionData) => {
+        try {
+            if (selectionData) {
+                console.log("this is selectiondata", selectionData);
+                // Post to create hunt
+                const response = await axios.post(
+                    "https://games-afoot.onrender.com/hunts",
+                    {
+                        ...selectionData,
+                        // startLatitude: parseFloat(selectionData.startLatitude),
+                        // startLongitude: parseFloat(
+                        //     selectionData.startLongitude
+                        // ),
+                    }
+                );
+
+                if (response.data && response.data.id) {
+                    const huntId = response.data.id;
+                    try {
+                        const generateLocationsResponse = await axios.post(
+                            `https://games-afoot.onrender.com/hunts/${huntId}/generate_locations`
+                        );
+                        const generateLocations =
+                            generateLocationsResponse.data;
+                        if (generateLocations) {
+                            console.log(
+                                "Locations successfully added to Hunt ID",
+                                { huntId }
+                            );
+                        } else {
+                            console.log("Locations data is empty");
+                        }
+                    } catch (error) {
+                        console.error("Error posting locations:", error);
+                    }
+                    try {
+                        console.log("Hunt data:", response.data);
+                        const huntId = response.data.id;
+                        console.log("Hunt ID:", huntId);
+                        const locationsResponse = await axios.get(
+                            `https://games-afoot.onrender.com/hunts/${huntId}/locations`
+                        );
+                        const locationsData = locationsResponse.data;
+                        console.log("Locations data:", locationsData);
+                        if (locationsData && locationsData.length > 0) {
+                            const gamePiece = { locations: locationsData };
+                            setGameData(gamePiece);
+                        } else {
+                            console.log("Locations data is empty");
+                        }
+                    } catch (error) {
+                        console.error("Error fetching locations:", error);
+                    }
+                } else {
+                    console.log(
+                        "POST /hunts response does not contain hunt ID"
+                    );
+                }
+            } else {
+                console.log("Selection data is empty");
+            }
+        } catch (error) {
+            console.error("Error starting game:", error);
         }
     };
 
@@ -141,19 +151,19 @@ const AppContent = () => {
     }, [gameData, currentLocationIndex, currentClueIndex]);
 
     const startGame = (selectionData) => {
-        if (selectionData && gamePiece) {
+        if (selectionData) {
             handleSelectionData(selectionData);
-            handleStartGame(gamePiece);
+            getGameData(selectionData);
         } else {
             console.log("Selection data or game piece is empty");
         }
     };
 
     // Mock location manually for testing
-    const setMockLocation = (lat, lon) => {
-        setCurrentLocation([lat, lon]);
-        checkProximity();
-    };
+    // const setMockLocation = (lat, lon) => {
+    //     setCurrentLocation([lat, lon]);
+    //     checkProximity();
+    // };
 
     return (
         <div>
@@ -165,7 +175,7 @@ const AppContent = () => {
                             currentLocation={currentLocation}
                             startGame={startGame}
                         />
-                        <button
+                        {/* <button
                             onClick={() => setMockLocation(37.7353, -122.4767)}
                         >
                             Set Mock Location to Golden Gate Park
@@ -179,7 +189,7 @@ const AppContent = () => {
                             onClick={() => setMockLocation(37.7749, -122.4194)}
                         >
                             Set Mock Location to Coit Tower
-                        </button>
+                        </button> */}
                     </div>
                     <div className="progress-tracking">
                         <Progress
