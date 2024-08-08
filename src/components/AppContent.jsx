@@ -40,6 +40,12 @@ const AppContent = () => {
             console.log(`Distance to target site: ${distance} km`);
             setDistanceToTarget(distance);
             console.log("Show game data", gameData);
+            const progressData = {
+                targetLocationIndex: currentLocationIndex,
+                gameComplete: gameComplete,
+                userId: 1, // Assuming a static userId for simplicity
+                huntId: gameData.huntId, // Assuming huntId is part of gameData
+            };
             saveProgress(progressData);
             if (distance < 0.05) {
                 moveToNextLocation();
