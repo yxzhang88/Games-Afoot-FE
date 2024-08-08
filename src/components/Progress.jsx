@@ -6,6 +6,7 @@ const Progress = ({
     checkProximity,
     distanceToTarget,
     nextClue,
+    clueDescription,
 }) => {
     console.log("Progress component:", {
         currentClue,
@@ -13,6 +14,7 @@ const Progress = ({
         checkProximity,
         distanceToTarget,
         nextClue,
+        clueDescription,
     });
 
     return (
@@ -38,6 +40,9 @@ const Progress = ({
             <div>
                 <span>Current Clue: {currentClue}</span>
             </div>
+            <div>
+                <span>Description: {clueDescription}</span>
+            </div>
             <button type="button" onClick={nextClue}>
                 Next Clue
             </button>
@@ -51,6 +56,7 @@ Progress.propTypes = {
     checkProximity: PropTypes.func.isRequired,
     distanceToTarget: PropTypes.number.isRequired,
     nextClue: PropTypes.func.isRequired,
+    clueDescription: PropTypes.string.isRequired,
 };
 
 export default Progress;

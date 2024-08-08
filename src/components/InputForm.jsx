@@ -105,6 +105,7 @@ function InputForm({ currentLocation, startGame }) {
                             value={gameType}
                             onChange={handleGameTypeValidation}
                             placeholder="Enter game type"
+                            maxLength={30}
                         />
                         {gameTypeError && (
                             <p style={{ color: "red" }}>{gameTypeError}</p>

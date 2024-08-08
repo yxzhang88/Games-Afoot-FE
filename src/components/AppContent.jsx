@@ -14,6 +14,7 @@ const AppContent = () => {
     const [currentLocationIndex, setCurrentLocationIndex] = useState(0);
     const [currentClueIndex, setCurrentClueIndex] = useState(0);
     const [currentClue, setCurrentClue] = useState("");
+    const [clueDescription, setClueDescription] = useState("");
     const [distanceToTarget, setDistanceToTarget] = useState(0);
     const [gameComplete, setGameComplete] = useState(false);
 
@@ -38,6 +39,8 @@ const AppContent = () => {
             );
             console.log(`Distance to target site: ${distance} km`);
             setDistanceToTarget(distance);
+            console.log("Show game data", gameData);
+            saveProgress(progressData);
             if (distance < 0.05) {
                 moveToNextLocation();
             }
@@ -50,6 +53,7 @@ const AppContent = () => {
             setCurrentLocationIndex(nextIndex);
             setCurrentClueIndex(0); // Reset clue index for the new location
             setCurrentClue(gameData.locations[nextIndex].clues[0]); // Set the first clue for the new location
+            setClueDescription(gameData.locations[nextIndex].description);
         } else {
             console.log("You have reached the final location!");
             setGameComplete(true);
@@ -115,8 +119,17 @@ const AppContent = () => {
                         const locationsData = locationsResponse.data;
                         console.log("Locations data:", locationsData);
                         if (locationsData && locationsData.length > 0) {
-                            const gamePiece = { locations: locationsData };
+                            // const gamePiece = { locations: locationsData };
+                            const gamePiece = {
+                                huntId: huntId,
+                                locations: locationsData,
+                            };
                             setGameData(gamePiece);
+                            await createProgress(
+                                currentLocationIndex,
+                                huntId,
+                                gameComplete
+                            );
                         } else {
                             console.log("Locations data is empty");
                         }
@@ -142,13 +155,60 @@ const AppContent = () => {
 
     useEffect(() => {
         if (gameData && gameData.locations.length > 0) {
-            const { clues } = gameData.locations[currentLocationIndex];
+            const location = gameData.locations[currentLocationIndex];
+            const { clues, description } = location;
             console.log(clues);
             if (clues && clues.length > 0) {
                 setCurrentClue(clues[currentClueIndex]);
+                setClueDescription(description);
             }
         }
     }, [gameData, currentLocationIndex, currentClueIndex]);
+
+    const createProgress = async (
+        currentLocationIndex,
+        huntId,
+        gameComplete
+    ) => {
+        try {
+            const userId = 1;
+            const progressData = {
+                huntId: huntId,
+                targetLocationIndex: currentLocationIndex,
+                gameComplete: gameComplete,
+                userId: userId,
+            };
+            console.log("Progress saved:", progressData);
+            const response = await axios.post(
+                `https://games-afoot.onrender.com/progress`,
+                progressData
+            );
+            console.log("Progress saved:", progressData);
+
+            if (response.data && response.data.id) {
+                const progressId = response.data.id;
+                console.log("Progress ID:", progressId);
+            } else {
+                console.log("No progress ID");
+            }
+        } catch (error) {
+            console.error("Error creating progress:", error);
+        }
+    };
+
+    const saveProgress = async (progressData, progressId) => {
+        const id = progressId;
+        try {
+            console.log("Progress saved:", progressData);
+            await axios.patch(
+                `https://games-afoot.onrender.com/progress/${id}/update-progress}`,
+                progressData
+            );
+            console.log("Progress saved:", progressData);
+        } catch (error) {
+            console.error("Error saving progress:", error);
+        }
+    };
 
     const startGame = (selectionData) => {
         if (selectionData) {
@@ -198,6 +258,7 @@ const AppContent = () => {
                             checkProximity={checkProximity}
                             distanceToTarget={distanceToTarget}
                             nextClue={nextClue}
+                            clueDescription={clueDescription}
                         />
                     </div>
                 </div>
