@@ -1,25 +1,13 @@
-.custom-icon.animate {
-    transform-origin: center; 
-    animation: fadePulse 2s infinite;
-}
-
-@keyframes fadePulse {
-    0% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.6;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
+/* Container for the map */
 .map-container {
     flex: 2;
+    /* Default flex-basis for desktop */
     height: 100%;
+    /* Ensure map container takes full height of its parent */
     position: relative;
+    /* Ensure map container is positioned relative */
     z-index: 5;
+    /* Ensure it is below the dropdown menu */
 }
 
 .instruction-icon {
@@ -36,6 +24,8 @@
 @media (max-width: 768px) {
     .map-container {
         width: 100%;
+        /* Ensure map container takes full width on mobile */
         margin: 0;
+        /* Remove any margin */
     }
 }

@@ -15,11 +15,6 @@ const Progress = ({
         nextClue,
     });
 
-    const handleClick = () => {
-        console.log("Button clicked, calling checkProximity");
-        checkProximity();
-    };
-
     return (
         <div className="other-content">
             <h2>Progress</h2>
@@ -28,7 +23,7 @@ const Progress = ({
                     <h4 style={{ margin: 0, marginRight: "10px" }}>
                         Your location:
                     </h4>
-                    <button type="button" onClick={handleClick}>
+                    <button type="button" onClick={checkProximity}>
                         Check Location
                     </button>
                 </div>
