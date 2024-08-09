@@ -10,6 +10,7 @@ import LocationMarker from "./LocationMarker";
 import L from "leaflet"; 
 import { useState, useEffect, useCallback } from "react";
 import InstructionPopUp from "./InstructionPopUp";
+import ScrollButton from "./ScrollButton";
 
 // Fix default icon issues
 delete L.Icon.Default.prototype._getIconUrl;
@@ -114,6 +115,9 @@ const MapContainer = ({ updateLocation }) => {
                     <LocationMarker position={position} />{" "}
                     <div className="instruction-icon">
                         <InstructionPopUp />
+                    </div>
+                    <div className="scroll-button">
+                        <ScrollButton />
                     </div>
                     <div className="map-controls">
                         <LocationButton onClick={handleLocationButtonClick} />

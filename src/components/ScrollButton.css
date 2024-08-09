@@ -1,0 +1,16 @@
+@media (max-width: 768px) {
+    .scroll-button {
+        background-color: #76b2f2;
+        border: .5px;
+        border-radius: 60%;
+        padding-top: 2px;
+        position: fixed;
+        z-index: 1000;
+        bottom: 20px;
+        right: 20px;
+    } 
+
+    .scroll-button.not-visible {
+        display: none;
+    }
+}
