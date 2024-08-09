@@ -1,13 +1,62 @@
-/* Container for the map */
+.custom-icon.animate {
+    transform-origin: center; 
+    animation: fadePulse 2s infinite;
+}
+
+@keyframes fadePulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.map {
+    position: relative;
+}
+
 .map-container {
     flex: 2;
-    /* Default flex-basis for desktop */
-    height: 100%;
-    /* Ensure map container takes full height of its parent */
-    position: relative;
-    /* Ensure map container is positioned relative */
-    z-index: 5;
-    /* Ensure it is below the dropdown menu */
+    display: flex;
+    flex-direction: column;
+    height: 100vh; 
+    width: 100%;   
+}
+
+.map-controls {
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+    z-index: 1000; 
+    display: flex;
+    flex-direction: column;
+}
+
+.location-button {
+    padding: 8px 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.3s;
+    margin-top: 8px; 
+}
+
+.location-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.location-button:active {
+    background-color: #003d7a;
+    transform: translateY(0);
 }
 
 .instruction-icon {
@@ -24,8 +73,6 @@
 @media (max-width: 768px) {
     .map-container {
         width: 100%;
-        /* Ensure map container takes full width on mobile */
         margin: 0;
-        /* Remove any margin */
     }
 }

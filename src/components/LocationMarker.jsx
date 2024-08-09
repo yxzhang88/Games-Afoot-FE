@@ -1,64 +1,87 @@
 import { Marker, Popup } from "react-leaflet";
 import PropTypes from "prop-types";
 import L from "leaflet";
-import location from "../assets/position.png";
 import calculateDistance from "../utilityFunctions/calculateDistance";
 import { useEffect, useRef } from "react";
+import "./MapStyles.css";
 
-// Component to render a location marker on the map
-const LocationMarker = ({ position }) => {
-    // Move the conditional check for position outside of the component
-    if (!position) return null;
-
-    // Define the icon for the marker
-    const icon = L.icon({
-        iconUrl: location,
-        iconSize: [50, 50], // Adjust size as needed
-        iconAnchor: [16, 32], // Centered at the bottom
-        popupAnchor: [0, -32], // Popup positioned above the icon
+const createIcon = (color, isClose) => {
+    return L.divIcon({
+        html: `
+            <svg width="25" height="41" viewBox="0 0 25 41" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.5 0C19.4 0 25 5.6 25 12.5C25 24.4 12.5 41 12.5 41C12.5 41 0 24.4 0 12.5C0 5.6 5.6 0 12.5 0Z" fill="${color}" stroke="white" stroke-width="2"/>
+                <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+            </svg>`,
+        iconSize: [25, 48],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        className: `custom-icon ${isClose ? 'animate' : ''}`,
     });
-
+};
+    
+const LocationMarker = ({ position }) =>
+{
     // Hardcoded target location and details
-    const targetPosition = [47.636719, -122.366706];
-    // test -122.371000
-    const targetName = "Test Spot";
-    const targetDetails = "This is a detailed description of the target spot.";
+    const targetPosition = [47.6315648, -122.3753728];
 
-    // Destructure latitude and longitude from the position array
     const [latitude, longitude] = position;
 
-    const isCloseToTarget =
-        calculateDistance(
-            latitude,
-            longitude,
-            targetPosition[0],
-            targetPosition[1]
-        ) < 0.1;
+    const distanceToTarget = calculateDistance(
+        latitude,
+        longitude,
+        targetPosition[0],
+        targetPosition[1]
+    );
+    console.log(`Distance to target: ${distanceToTarget} km`);
 
+    const isVeryClose = distanceToTarget < 0.05; // < 50 meters
+    const markerColor = distanceToTarget < 0.05
+        ? "green" // < 50 meters
+        : distanceToTarget < 0.1
+        ? "yellow" // < 100 meters
+        : distanceToTarget < 0.5
+        ? "blue" // < 500 meters
+        : "red";  // > 500 meters
+
+    const dynamicIcon = createIcon(markerColor, isVeryClose);
     const markerRef = useRef(null);
 
     // Use a separate useEffect hook to handle the logic
     useEffect(() => {
-        if (markerRef.current && isCloseToTarget) {
+        if (markerRef.current && isVeryClose) {
             markerRef.current.openPopup();
         }
-    }, [isCloseToTarget, latitude, longitude]);
+    }, [isVeryClose, latitude, longitude]);
 
     return (
-        <Marker position={position} icon={icon} ref={markerRef}>
+        <Marker position={position} icon={dynamicIcon} ref={markerRef}>
             <Popup>
                 <div>
-                    {isCloseToTarget ? (
+                    {isVeryClose ? (
                         <>
-                            <strong>Congratulation! You have reached:</strong>
+                            <strong>Congratulations!</strong>
                             <br />
-                            Target Name: {targetName}
+                            You have arrived!
+                        </>
+                    ) : markerColor === "green" ? (
+                        <>
+                            <strong>Great job!</strong>
                             <br />
-                            Description: {targetDetails}
+                            You are very close to the target.
+                            <br />
+                            Distance to target: {distanceToTarget.toFixed(2)} km
+                        </>
+                    ) : markerColor === "blue" ? (
+                        <>
+                            <strong>Keep going!</strong>
+                            <br />
+                            You are getting closer to the target.
+                            <br />
+                            Distance to target: {distanceToTarget.toFixed(2)} km
                         </>
                     ) : (
                         <>
-                            <strong>Look at you!</strong>
+                            <strong>Keep moving!</strong>
                             <br />
                             Latitude: {latitude.toFixed(6)}
                             <br />

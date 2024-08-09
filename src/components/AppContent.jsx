@@ -5,7 +5,7 @@ import Progress from "./Progress";
 import MapContainer from "./MapContainer";
 import calculateDistance from "../utilityFunctions/calculateDistance";
 import "./MapStyles.css";
-import "./AppContent.css"; // General styles
+import "./AppContent.css"; 
 
 const AppContent = () => {
     const [selectionData, setSelectionData] = useState(null);
