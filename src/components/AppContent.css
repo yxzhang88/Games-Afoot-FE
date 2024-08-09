@@ -1,12 +1,7 @@
-/* Content section that holds both the map and other content */
 .content {
     display: flex;
     flex-direction: row;
     height: 100%;
-
-    /* display: flex;
-    flex: 1;
-    height: 100%; */
 }
 
 .other-content {
@@ -68,23 +63,16 @@
 @media (max-width: 768px) {
     .content {
         flex-direction: column;
-        /* Stack content vertically on mobile */
     }
 
     .other-content {
         width: 100%;
-        /* Ensure both sections take full width on mobile */
         margin: 0;
         order: -1;
-        /* Place other content above the map */
         min-height: 100px;
-        /* Set a minimum height to ensure it isn't too small */
         box-sizing: border-box;
-        /* Ensure padding is included in the width */
         width: 100%;
-        /* Ensure both sections take full width on mobile */
         padding: 20px;
-        /* Ensure consistent padding */
     }
 
 }

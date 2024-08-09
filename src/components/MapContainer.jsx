@@ -8,7 +8,7 @@ import "./MapStyles.css";
 import PropTypes from "prop-types"; 
 import LocationMarker from "./LocationMarker"; 
 import L from "leaflet"; 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import InstructionPopUp from "./InstructionPopUp";
 
 // Fix default icon issues
@@ -34,6 +34,19 @@ const MapCenter = ({ position }) => {
 
 MapCenter.propTypes = {
     position: PropTypes.arrayOf(PropTypes.number).isRequired, 
+};
+
+const LocationButton = ({ onClick }) => (
+    <button 
+        onClick={onClick}
+        className="location-button"
+    >
+        Center
+    </button>
+);
+
+LocationButton.propTypes = {
+    onClick: PropTypes.func.isRequired, 
 };
 
 const MapContainer = ({ updateLocation }) => {
@@ -66,6 +79,25 @@ const MapContainer = ({ updateLocation }) => {
         }
     }, [updateLocation, initialLoad]); 
 
+    const handleLocationButtonClick = useCallback(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const { latitude, longitude } = pos.coords; 
+                    const newPosition = [latitude, longitude];
+                    setPosition(newPosition); 
+                    updateLocation(newPosition); 
+                },
+                (error) => {
+                    console.error("Error retrieving position:", error); 
+                },
+                { enableHighAccuracy: true } 
+            );
+        } else {
+            console.error("Geolocation not supported by this browser.");
+        }
+    }, [updateLocation]);
+
     return (
         <div className="map" > 
             <div className="map-container">
@@ -82,6 +114,9 @@ const MapContainer = ({ updateLocation }) => {
                     <LocationMarker position={position} />{" "}
                     <div className="instruction-icon">
                         <InstructionPopUp />
+                    </div>
+                    <div className="map-controls">
+                        <LocationButton onClick={handleLocationButtonClick} />
                     </div>
                 </LeafletMapContainer>
             </div>
