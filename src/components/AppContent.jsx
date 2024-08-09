@@ -76,7 +76,7 @@ const AppContent = () => {
                 console.log("this is selectiondata", selectionData);
                 // Post to create hunt
                 const response = await axios.post(
-                    "http://localhost:8080/hunts",
+                    "https://games-afoot.onrender.com/hunts",
                     {
                         ...selectionData,
                         // startLatitude: parseFloat(selectionData.startLatitude),
@@ -90,7 +90,7 @@ const AppContent = () => {
                     const huntId = response.data.id;
                     try {
                         const generateLocationsResponse = await axios.post(
-                            `http://localhost:8080/hunts/${huntId}/generate_locations`
+                            `https://games-afoot.onrender.com/hunts/${huntId}/generate_locations`
                         );
                         const generateLocations =
                             generateLocationsResponse.data;
@@ -110,7 +110,7 @@ const AppContent = () => {
                         const huntId = response.data.id;
                         console.log("Hunt ID:", huntId);
                         const locationsResponse = await axios.get(
-                            `http://localhost:8080/hunts/${huntId}/locations`
+                            `https://games-afoot.onrender.com/hunts/${huntId}/locations`
                         );
                         const locationsData = locationsResponse.data;
                         console.log("Locations data:", locationsData);
