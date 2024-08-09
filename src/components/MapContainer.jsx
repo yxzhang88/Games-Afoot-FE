@@ -67,21 +67,25 @@ const MapContainer = ({ updateLocation }) => {
     }, [updateLocation, initialLoad]); 
 
     return (
-        <LeafletMapContainer
-            center={position}
-            zoom={13}
-            style={{ height: "100vh", width: "100%" }}
-        >
-            <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            <MapCenter position={position} />{" "}
-            <LocationMarker position={position} />{" "}
-            <div className="instruction-icon">
-                <InstructionPopUp />
+        <div className="map" > 
+            <div className="map-container">
+                <LeafletMapContainer
+                    center={position}
+                    zoom={13}
+                    style={{ height: "100vh", width: "100%"}}
+                >
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    <MapCenter position={position} />{" "}
+                    <LocationMarker position={position} />{" "}
+                    <div className="instruction-icon">
+                        <InstructionPopUp />
+                    </div>
+                </LeafletMapContainer>
             </div>
-        </LeafletMapContainer>
+        </div>
     );
 };
 

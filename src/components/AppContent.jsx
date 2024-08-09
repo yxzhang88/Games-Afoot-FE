@@ -5,7 +5,7 @@ import Progress from "./Progress";
 import MapContainer from "./MapContainer";
 import calculateDistance from "../utilityFunctions/calculateDistance";
 import "./MapStyles.css";
-import "./AppContent.css"; // General styles
+import "./AppContent.css"; 
 
 const AppContent = () => {
     const [selectionData, setSelectionData] = useState(null);
@@ -76,7 +76,7 @@ const AppContent = () => {
                 console.log("this is selectiondata", selectionData);
                 // Post to create hunt
                 const response = await axios.post(
-                    "https://games-afoot.onrender.com/hunts",
+                    "http://localhost:8080/hunts",
                     {
                         ...selectionData,
                         // startLatitude: parseFloat(selectionData.startLatitude),
@@ -90,7 +90,7 @@ const AppContent = () => {
                     const huntId = response.data.id;
                     try {
                         const generateLocationsResponse = await axios.post(
-                            `https://games-afoot.onrender.com/hunts/${huntId}/generate_locations`
+                            `http://localhost:8080/hunts/${huntId}/generate_locations`
                         );
                         const generateLocations =
                             generateLocationsResponse.data;
@@ -110,7 +110,7 @@ const AppContent = () => {
                         const huntId = response.data.id;
                         console.log("Hunt ID:", huntId);
                         const locationsResponse = await axios.get(
-                            `https://games-afoot.onrender.com/hunts/${huntId}/locations`
+                            `http://localhost:8080/hunts/${huntId}/locations`
                         );
                         const locationsData = locationsResponse.data;
                         console.log("Locations data:", locationsData);

@@ -1,11 +1,14 @@
 /* Content section that holds both the map and other content */
 .content {
     display: flex;
-    flex: 1;
+    flex-direction: row;
     height: 100%;
+
+    /* display: flex;
+    flex: 1;
+    height: 100%; */
 }
 
-/* Container for other content, occupying one-third of the content area */
 .other-content {
     flex: 1;
     background-color: rgb(241, 230, 208);

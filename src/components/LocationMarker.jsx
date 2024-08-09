@@ -22,9 +22,7 @@ const createIcon = (color, isClose) => {
 const LocationMarker = ({ position }) =>
 {
     // Hardcoded target location and details
-    const targetPosition = [47.636719, -122.366706];
-    const targetName = "Test Spot";
-    const targetDetails = "This is a detailed description of the target spot.";
+    const targetPosition = [47.6315648, -122.3753728];
 
     const [latitude, longitude] = position;
 
@@ -63,11 +61,7 @@ const LocationMarker = ({ position }) =>
                         <>
                             <strong>Congratulations!</strong>
                             <br />
-                            You have been react!
-                            <br />
-                            Target Name: {targetName}
-                            <br />
-                            Description: {targetDetails}
+                            You have arrived!
                         </>
                     ) : markerColor === "green" ? (
                         <>
