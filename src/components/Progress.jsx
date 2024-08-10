@@ -7,15 +7,21 @@ const Progress = ({
     distanceToTarget,
     nextClue,
     clueDescription,
+    descriptionVisible,
+    locationName,
+    locationNameVisible,
 }) => {
-    console.log("Progress component:", {
-        currentClue,
-        currentLocation,
-        checkProximity,
-        distanceToTarget,
-        nextClue,
-        clueDescription,
-    });
+    // console.log("Progress component:", {
+    //     currentClue,
+    //     currentLocation,
+    //     checkProximity,
+    //     distanceToTarget,
+    //     nextClue,
+    //     clueDescription,
+    //     descriptionVisible,
+    //     locationName,
+    //     locationNameVisible,
+    // });
 
     return (
         <div className="other-content">
@@ -40,12 +46,19 @@ const Progress = ({
             <div>
                 <span>Current Clue: {currentClue}</span>
             </div>
-            <div>
-                <span>Description: {clueDescription}</span>
-            </div>
             <button type="button" onClick={nextClue}>
                 Next Clue
             </button>
+            {locationNameVisible && (
+                <div className="location-name">
+                    Location Name: {locationName}
+                </div>
+            )}
+            {descriptionVisible && (
+                <div className="location-description">
+                    Location Description: {clueDescription}
+                </div>
+            )}
         </div>
     );
 };
@@ -57,6 +70,9 @@ Progress.propTypes = {
     distanceToTarget: PropTypes.number.isRequired,
     nextClue: PropTypes.func.isRequired,
     clueDescription: PropTypes.string.isRequired,
+    descriptionVisible: PropTypes.bool.isRequired,
+    locationName: PropTypes.string.isRequired,
+    locationNameVisible: PropTypes.bool.isRequired,
 };
 
 export default Progress;
