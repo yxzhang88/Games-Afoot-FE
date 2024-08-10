@@ -105,16 +105,17 @@ function InputForm({ currentLocation, startGame }) {
                             value={gameType}
                             onChange={handleGameTypeValidation}
                             placeholder="Enter game type"
+                            maxLength={30}
                         />
                         {gameTypeError && (
                             <p style={{ color: "red" }}>{gameTypeError}</p>
                         )}
                     </div>
-                    <div>
+                    {/* <div>
                         <p>Latitude: {currentLocation[0]}</p>
                         <p>Longitude: {currentLocation[1]}</p>
-                    </div>
-                    <button type="submit">Start Game</button>
+                    </div> */}
+                    <button type="submit">New Game</button>
                     {/* Add reset game button later */}
                 </form>
             )}

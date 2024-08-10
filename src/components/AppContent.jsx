@@ -7,6 +7,8 @@ import calculateDistance from "../utilityFunctions/calculateDistance";
 import "./MapStyles.css";
 import "./AppContent.css"; 
 
+const kBaseUrl = "https://games-afoot.onrender.com";
+
 const AppContent = () => {
     const [selectionData, setSelectionData] = useState(null);
     const [gameData, setGameData] = useState(null);
@@ -14,8 +16,14 @@ const AppContent = () => {
     const [currentLocationIndex, setCurrentLocationIndex] = useState(0);
     const [currentClueIndex, setCurrentClueIndex] = useState(0);
     const [currentClue, setCurrentClue] = useState("");
+    const [clueDescription, setClueDescription] = useState("");
+    const [descriptionVisible, setDescriptionVisible] = useState(false);
+    const [locationName, setLocationName] = useState("");
+    const [locationNameVisible, setLocationNameVisible] = useState(false);
     const [distanceToTarget, setDistanceToTarget] = useState(0);
     const [gameComplete, setGameComplete] = useState(false);
+    const [progressData, setProgressData] = useState(null);
+    const [mockLocationIndex, setMockLocationIndex] = useState(null);
 
     const updateLocation = (newLocation) => {
         setCurrentLocation(newLocation);
@@ -38,22 +46,62 @@ const AppContent = () => {
             );
             console.log(`Distance to target site: ${distance} km`);
             setDistanceToTarget(distance);
+            console.log("Show game data", gameData);
+
             if (distance < 0.05) {
-                moveToNextLocation();
+                setLocationName(gameData.locations[currentLocationIndex].name);
+                setClueDescription(
+                    gameData.locations[currentLocationIndex].description
+                );
+                setDescriptionVisible(true);
+                setLocationNameVisible(true);
+
+                const newProgressData = {
+                    id: progressData.id,
+                    targetLocationIndex: currentLocationIndex,
+                    gameComplete: gameComplete,
+                    userId: 1,
+                    huntId: gameData.huntId,
+                };
+                updateProgress(newProgressData);
+                setTimeout(() => {
+                    moveToNextLocation();
+                }, 10000);
             }
         }
     };
 
-    const moveToNextLocation = () => {
-        if (currentLocationIndex < gameData.locations.length - 1) {
-            const nextIndex = currentLocationIndex + 1;
-            setCurrentLocationIndex(nextIndex);
-            setCurrentClueIndex(0); // Reset clue index for the new location
-            setCurrentClue(gameData.locations[nextIndex].clues[0]); // Set the first clue for the new location
-        } else {
-            console.log("You have reached the final location!");
-            setGameComplete(true);
-            alert("Congratulations! You have completed the game.");
+    const moveToNextLocation = async () => {
+        try {
+            const response = await axios.get(
+                `${kBaseUrl}/progress/${progressData.id}`
+            );
+            const updatedProgressData = response.data;
+
+            if (updatedProgressData.gameComplete) {
+                console.log("The game is complete!");
+                setGameComplete(true);
+                alert("Congratulations! You have completed the game.");
+                return;
+            }
+
+            if (currentLocationIndex < gameData.locations.length - 1) {
+                const nextIndex = currentLocationIndex + 1;
+                setCurrentLocationIndex(nextIndex);
+                setCurrentClueIndex(0); // Reset clue index for the new location
+                setCurrentClue(gameData.locations[nextIndex].clues[0]); // Set the first clue for the new location
+                setLocationName("");
+                setClueDescription("");
+                setDescriptionVisible(false);
+                setLocationNameVisible(false);
+            } else {
+                console.log("You have reached the final location!");
+                setGameComplete(true);
+                completeGameProgress(progressData);
+                alert("Congratulations! You have completed the game.");
+            }
+        } catch (error) {
+            console.error("Error checking game completion:", error);
         }
     };
 
@@ -75,22 +123,15 @@ const AppContent = () => {
             if (selectionData) {
                 console.log("this is selectiondata", selectionData);
                 // Post to create hunt
-                const response = await axios.post(
-                    "https://games-afoot.onrender.com/hunts",
-                    {
-                        ...selectionData,
-                        // startLatitude: parseFloat(selectionData.startLatitude),
-                        // startLongitude: parseFloat(
-                        //     selectionData.startLongitude
-                        // ),
-                    }
-                );
+                const response = await axios.post(`${kBaseUrl}/hunts`, {
+                    ...selectionData,
+                });
 
                 if (response.data && response.data.id) {
                     const huntId = response.data.id;
                     try {
                         const generateLocationsResponse = await axios.post(
-                            `https://games-afoot.onrender.com/hunts/${huntId}/generate_locations`
+                            `${kBaseUrl}/hunts/${huntId}/generate_locations`
                         );
                         const generateLocations =
                             generateLocationsResponse.data;
@@ -110,13 +151,21 @@ const AppContent = () => {
                         const huntId = response.data.id;
                         console.log("Hunt ID:", huntId);
                         const locationsResponse = await axios.get(
-                            `https://games-afoot.onrender.com/hunts/${huntId}/locations`
+                            `${kBaseUrl}/hunts/${huntId}/locations`
                         );
                         const locationsData = locationsResponse.data;
                         console.log("Locations data:", locationsData);
                         if (locationsData && locationsData.length > 0) {
-                            const gamePiece = { locations: locationsData };
+                            const gamePiece = {
+                                huntId: huntId,
+                                locations: locationsData,
+                            };
                             setGameData(gamePiece);
+                            await createProgress(
+                                currentLocationIndex,
+                                huntId,
+                                gameComplete
+                            );
                         } else {
                             console.log("Locations data is empty");
                         }
@@ -142,13 +191,84 @@ const AppContent = () => {
 
     useEffect(() => {
         if (gameData && gameData.locations.length > 0) {
-            const { clues } = gameData.locations[currentLocationIndex];
+            const location = gameData.locations[currentLocationIndex];
+            const { clues, description } = location;
             console.log(clues);
             if (clues && clues.length > 0) {
                 setCurrentClue(clues[currentClueIndex]);
+                setClueDescription(description);
             }
         }
     }, [gameData, currentLocationIndex, currentClueIndex]);
+
+    const createProgress = async (
+        currentLocationIndex,
+        huntId,
+        gameComplete
+    ) => {
+        try {
+            const userId = 1;
+            const newProgressData = {
+                huntId: huntId,
+                targetLocationIndex: currentLocationIndex,
+                gameComplete: gameComplete,
+                userId: userId,
+            };
+
+            const response = await axios.post(
+                `${kBaseUrl}/progress`,
+                newProgressData
+            );
+
+            if (response.data && response.data.id) {
+                const progressId = response.data.id;
+                console.log("Progress ID came back:", progressId);
+                const progressInfo = response.data;
+                console.log("Progress data returned:", progressInfo);
+                setProgressData(progressInfo);
+            } else {
+                console.log("No progress data returned");
+            }
+        } catch (error) {
+            console.error("Error creating progress:", error);
+        }
+    };
+
+    useEffect(() => {
+        if (progressData) {
+            console.log("Progress data updated:", progressData);
+        }
+    }, [progressData]);
+
+    const handleProgressUpdate = async (url) => {
+        // console.log("logging progress data", progressData);
+
+        try {
+            const response = await axios.patch(url);
+            if (response.status === 200 && response.data) {
+                console.log("Progress updated successfully:", response.data);
+                setProgressData(response.data);
+            } else {
+                console.log("Failed to update progress,", response.status);
+            }
+        } catch (error) {
+            console.error("Error updating progress:", error);
+        }
+    };
+
+    const updateProgress = async (progressData) => {
+        const id = progressData.id;
+        const url = `${kBaseUrl}/progress/${id}/update-progress`;
+        console.log("Updating progress with ID:", progressData.id);
+        await handleProgressUpdate(url, progressData);
+    };
+
+    const completeGameProgress = async (progressData) => {
+        const id = progressData.id;
+        const url = `${kBaseUrl}/progress/${id}/complete-game`;
+        console.log("Game completed progress with ID:", progressData.id);
+        await handleProgressUpdate(url, progressData);
+    };
 
     const startGame = (selectionData) => {
         if (selectionData) {
@@ -159,11 +279,16 @@ const AppContent = () => {
         }
     };
 
-    // Mock location manually for testing
-    // const setMockLocation = (lat, lon) => {
-    //     setCurrentLocation([lat, lon]);
-    //     checkProximity();
-    // };
+    //Mock location manually for testing
+    const setMockLocation = (index) => {
+        if (gameData && gameData.locations[index]) {
+            const { latitude, longitude } = gameData.locations[index];
+            setCurrentLocation([parseFloat(latitude), parseFloat(longitude)]);
+            checkProximity();
+        } else {
+            console.log("Invalid location index");
+        }
+    };
 
     return (
         <div>
@@ -175,21 +300,30 @@ const AppContent = () => {
                             currentLocation={currentLocation}
                             startGame={startGame}
                         />
-                        {/* <button
-                            onClick={() => setMockLocation(37.7353, -122.4767)}
+                        <button
+                            onClick={() => {
+                                setMockLocationIndex(0);
+                                setMockLocation(0);
+                            }}
                         >
-                            Set Mock Location to Golden Gate Park
+                            Set Mock Location 1
                         </button>
                         <button
-                            onClick={() => setMockLocation(37.7375, -122.4782)}
+                            onClick={() => {
+                                setMockLocationIndex(1);
+                                setMockLocation(1);
+                            }}
                         >
-                            Set Mock Location to San Francisco History Museum
+                            Set Mock Location 2
                         </button>
                         <button
-                            onClick={() => setMockLocation(37.7749, -122.4194)}
+                            onClick={() => {
+                                setMockLocationIndex(2);
+                                setMockLocation(2);
+                            }}
                         >
-                            Set Mock Location to Coit Tower
-                        </button> */}
+                            Set Mock Location 3
+                        </button>
                     </div>
                     <div className="progress-tracking">
                         <Progress
@@ -198,6 +332,10 @@ const AppContent = () => {
                             checkProximity={checkProximity}
                             distanceToTarget={distanceToTarget}
                             nextClue={nextClue}
+                            clueDescription={clueDescription}
+                            descriptionVisible={descriptionVisible}
+                            locationName={locationName}
+                            locationNameVisible={locationNameVisible}
                         />
                     </div>
                 </div>

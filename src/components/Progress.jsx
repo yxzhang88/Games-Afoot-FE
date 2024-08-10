@@ -6,14 +6,22 @@ const Progress = ({
     checkProximity,
     distanceToTarget,
     nextClue,
+    clueDescription,
+    descriptionVisible,
+    locationName,
+    locationNameVisible,
 }) => {
-    console.log("Progress component:", {
-        currentClue,
-        currentLocation,
-        checkProximity,
-        distanceToTarget,
-        nextClue,
-    });
+    // console.log("Progress component:", {
+    //     currentClue,
+    //     currentLocation,
+    //     checkProximity,
+    //     distanceToTarget,
+    //     nextClue,
+    //     clueDescription,
+    //     descriptionVisible,
+    //     locationName,
+    //     locationNameVisible,
+    // });
 
     return (
         <div className="other-content">
@@ -41,6 +49,16 @@ const Progress = ({
             <button type="button" onClick={nextClue}>
                 Next Clue
             </button>
+            {locationNameVisible && (
+                <div className="location-name">
+                    Location Name: {locationName}
+                </div>
+            )}
+            {descriptionVisible && (
+                <div className="location-description">
+                    Location Description: {clueDescription}
+                </div>
+            )}
         </div>
     );
 };
@@ -51,46 +69,10 @@ Progress.propTypes = {
     checkProximity: PropTypes.func.isRequired,
     distanceToTarget: PropTypes.number.isRequired,
     nextClue: PropTypes.func.isRequired,
+    clueDescription: PropTypes.string.isRequired,
+    descriptionVisible: PropTypes.bool.isRequired,
+    locationName: PropTypes.string.isRequired,
+    locationNameVisible: PropTypes.bool.isRequired,
 };
 
 export default Progress;
-
-// how progress table should look like
-
-// [
-//     {
-//         "id": 1,
-//         "userId": 1,
-//         "huntId": 1,
-//         "currentLocationIndex": 2,
-//         "visitedLocations": [
-//             1,
-//             2,
-//             3
-//         ],
-//         "nextHint": "Go to the corner"
-//     },
-//     {
-//         "id": 2,
-//         "userId": 1,
-//         "huntId": 2,
-//         "currentLocationIndex": 0,
-//         "visitedLocations": [
-//             1
-//         ],
-//         "nextHint": "Find the gold statue"
-//     },
-//     {
-//         "id": 3,
-//         "userId": 2,
-//         "huntId": 3,
-//         "currentLocationIndex": 3,
-//         "visitedLocations": [
-//             1,
-//             2,
-//             3,
-//             4
-//         ],
-//         "nextHint": "Cross the bridge"
-//     }
-// ]
