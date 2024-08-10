@@ -214,12 +214,11 @@ const AppContent = () => {
                 gameComplete: gameComplete,
                 userId: userId,
             };
-            // console.log("Progress saved:", newProgressData);
+
             const response = await axios.post(
                 `${kBaseUrl}/progress`,
                 newProgressData
             );
-            // console.log("Progress saved:", progressData);
 
             if (response.data && response.data.id) {
                 const progressId = response.data.id;
@@ -241,13 +240,8 @@ const AppContent = () => {
         }
     }, [progressData]);
 
-    const handleProgressUpdate = async (url, progressData) => {
-        console.log("logging progress data", progressData);
-        // if (progressData) {
-        //     const updateProgressData = {
-        //         id: progressData.id,
-        //         targetLocationIndex: progressData.targetLocationIndex,
-        //     };
+    const handleProgressUpdate = async (url) => {
+        // console.log("logging progress data", progressData);
 
         try {
             const response = await axios.patch(url);
@@ -260,9 +254,6 @@ const AppContent = () => {
         } catch (error) {
             console.error("Error updating progress:", error);
         }
-        // } else {
-        //     console.log("No valid progress data to update.");
-        // }
     };
 
     const updateProgress = async (progressData) => {
