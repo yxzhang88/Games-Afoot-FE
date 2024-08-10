@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
-import "./Navbar.css";
 import { useState, useRef, useEffect } from "react";
 import logo1 from "../assets/logo1.png";
+import "./Navbar.css";
 
 const Navbar = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -33,7 +33,7 @@ const Navbar = () => {
                 <img
                     src={logo1}
                     alt="logo"
-                    style={{ width: "40%", height: "auto" }}
+                    style={{ width: "50%", height: "auto" }}
                 />
             </div>
             <div className="menu">
@@ -46,10 +46,7 @@ const Navbar = () => {
                             <NavLink to="/">Games</NavLink>
                         </div>
                         <div className="dropdown-item">
-                            <NavLink to="/aboutus">About Us</NavLink>
-                        </div>
-                        <div className="dropdown-item">
-                            <NavLink to="/instruction">Instruction</NavLink>
+                            <NavLink to="/aboutgame">About Game</NavLink>
                         </div>
                     </div>
                 )}

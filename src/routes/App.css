@@ -1,24 +1,19 @@
-/* Set body, html, and root to occupy full height and remove default margin */
 body,
 html,
 #root {
-  height: 100%;
-  margin: 0;
+    height: 100%;
+    margin: 0;
 }
 
-/* Container for the entire app, using flexbox to layout the content */
 .app-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .header {
   box-sizing: border-box;
-  /* Ensure padding is included in the width */
   width: 100%;
-  height: 70px; /* 设置固定高度 */
-  /* Ensure both sections take full width on mobile */
   padding: 20px;
-  /* Ensure consistent padding */
+  height: 130px;
 }

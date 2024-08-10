@@ -1,13 +1,9 @@
-/* Content section that holds both the map and other content */
 .content {
     display: flex;
-    flex: 1;
-    /* Take up the remaining space */
+    flex-direction: row;
     height: 100%;
-    /* Make sure content takes the full available height */
 }
 
-/* Container for other content, occupying one-third of the content area */
 .other-content {
     flex: 1;
     background-color: rgb(241, 230, 208);
@@ -20,48 +16,63 @@
     overflow: auto;
 }
 
-/* Style for individual divs inside other-content */
 .other-content div {
     margin-bottom: 5px;
-    /* Add spacing between elements */
     width: auto;
 }
 
 .user-input {
-    flex: 1;
-    padding: 10px;
-    /* border: 1px solid rgb(0, 0, 0); */
+    transition: height 0.3s ease;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.input-form {
+    margin: 10px;
+}
+
+.toggle-header {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.arrow {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    margin-left: 10px;
+}
+
+.arrow.up {
+    border-bottom: 10px solid #000;
+}
+
+.arrow.down {
+    border-top: 10px solid #000;
 }
 
 .progress-tracking {
     flex: 2;
-    padding: 0px;
-    /* border: 1px solid rgb(0, 0, 0); */
+    padding: 3px;
 }
-
-
 
 /* Mobile-specific styles */
 @media (max-width: 768px) {
     .content {
         flex-direction: column;
-        /* Stack content vertically on mobile */
     }
 
     .other-content {
         width: 100%;
-        /* Ensure both sections take full width on mobile */
         margin: 0;
         order: -1;
-        /* Place other content above the map */
         min-height: 100px;
-        /* Set a minimum height to ensure it isn't too small */
         box-sizing: border-box;
-        /* Ensure padding is included in the width */
         width: 100%;
-        /* Ensure both sections take full width on mobile */
         padding: 20px;
-        /* Ensure consistent padding */
     }
 
 }

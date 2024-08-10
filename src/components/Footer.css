@@ -2,5 +2,8 @@
     background-color: white;
     color: grey;
     text-align: center;
-
+    padding: 5px;
+    width: 100%;
+    position: relative;
+    bottom: 0;
 }
