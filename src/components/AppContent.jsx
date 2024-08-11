@@ -94,8 +94,8 @@ const AppContent = () => {
             if (currentLocationIndex < gameData.locations.length - 1) {
                 const nextIndex = currentLocationIndex + 1;
                 setCurrentLocationIndex(nextIndex);
-                setCurrentClueIndex(0); // Reset clue index for the new location
-                setCurrentClue(gameData.locations[nextIndex].clues[0]); // Set the first clue for the new location
+                setCurrentClueIndex(0);
+                setCurrentClue(gameData.locations[nextIndex].clues[0]);
                 setLocationName("");
                 setClueDescription("");
                 setDescriptionVisible(false);
