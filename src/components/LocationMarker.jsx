@@ -15,12 +15,11 @@ const createIcon = (color, isClose) => {
         iconSize: [25, 48],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
-        className: `custom-icon ${isClose ? 'animate' : ''}`,
+        className: `custom-icon ${isClose ? "animate" : ""}`,
     });
 };
-    
-const LocationMarker = ({ position }) =>
-{
+
+const LocationMarker = ({ position }) => {
     // Hardcoded target location and details
     const targetPosition = [47.6315648, -122.3753728];
 
@@ -35,23 +34,30 @@ const LocationMarker = ({ position }) =>
     console.log(`Distance to target: ${distanceToTarget} km`);
 
     const isVeryClose = distanceToTarget < 0.05; // < 50 meters
-    const markerColor = distanceToTarget < 0.05
-        ? "green" // < 50 meters
-        : distanceToTarget < 0.1
-        ? "yellow" // < 100 meters
-        : distanceToTarget < 0.5
-        ? "blue" // < 500 meters
-        : "red";  // > 500 meters
+    const markerColor =
+        distanceToTarget < 0.05
+            ? "green" // < 50 meters
+            : distanceToTarget < 0.1
+            ? "yellow" // < 100 meters
+            : distanceToTarget < 0.5
+            ? "blue" // < 500 meters
+            : "red"; // > 500 meters
 
     const dynamicIcon = createIcon(markerColor, isVeryClose);
     const markerRef = useRef(null);
+
+    useEffect(() => {
+        if (markerRef.current) {
+            markerRef.current.setLatLng(position);
+        }
+    }, [position]);
 
     // Use a separate useEffect hook to handle the logic
     useEffect(() => {
         if (markerRef.current && isVeryClose) {
             markerRef.current.openPopup();
         }
-    }, [isVeryClose, latitude, longitude]);
+    }, [isVeryClose]);
 
     return (
         <Marker position={position} icon={dynamicIcon} ref={markerRef}>
