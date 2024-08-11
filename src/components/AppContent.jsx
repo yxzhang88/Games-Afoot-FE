@@ -4,8 +4,9 @@ import InputForm from "./InputForm";
 import Progress from "./Progress";
 import MapContainer from "./MapContainer";
 import calculateDistance from "../utilityFunctions/calculateDistance";
+import { Snackbar, Alert } from "@mui/material";
 import "./MapStyles.css";
-import "./AppContent.css"; 
+import "./AppContent.css";
 
 const kBaseUrl = "https://games-afoot.onrender.com";
 
@@ -24,6 +25,8 @@ const AppContent = () => {
     const [gameComplete, setGameComplete] = useState(false);
     const [progressData, setProgressData] = useState(null);
     const [mockLocationIndex, setMockLocationIndex] = useState(null);
+    const [open, setOpen] = useState(false);
+    const [finishMessage, setFinishMessage] = useState("");
 
     const updateLocation = (newLocation) => {
         setCurrentLocation(newLocation);
@@ -66,7 +69,7 @@ const AppContent = () => {
                 updateProgress(newProgressData);
                 setTimeout(() => {
                     moveToNextLocation();
-                }, 10000);
+                }, 6000);
             }
         }
     };
@@ -81,7 +84,10 @@ const AppContent = () => {
             if (updatedProgressData.gameComplete) {
                 console.log("The game is complete!");
                 setGameComplete(true);
-                alert("Congratulations! You have completed the game.");
+                setFinishMessage(
+                    "Congratulations! You have completed the game."
+                );
+                setOpen(true);
                 return;
             }
 
@@ -98,7 +104,10 @@ const AppContent = () => {
                 console.log("You have reached the final location!");
                 setGameComplete(true);
                 completeGameProgress(progressData);
-                alert("Congratulations! You have completed the game.");
+                setFinishMessage(
+                    "Congratulations! You have completed the game."
+                );
+                setOpen(true);
             }
         } catch (error) {
             console.error("Error checking game completion:", error);
@@ -340,9 +349,23 @@ const AppContent = () => {
                     </div>
                 </div>
                 <div className="map-container">
-                    {<MapContainer updateLocation={updateLocation} />}
+                    {
+                        <MapContainer
+                            currentLocation={currentLocation}
+                            updateLocation={updateLocation}
+                        />
+                    }
                 </div>
             </div>
+            <Snackbar
+                open={open}
+                autoHideDuration={6000}
+                onClose={() => setOpen(false)}
+            >
+                <Alert onClose={() => setOpen(false)} severity="success">
+                    {finishMessage}
+                </Alert>
+            </Snackbar>
         </div>
     );
 };

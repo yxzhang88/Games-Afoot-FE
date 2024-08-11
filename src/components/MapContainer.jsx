@@ -3,11 +3,11 @@ import {
     TileLayer,
     useMap,
 } from "react-leaflet";
-import "leaflet/dist/leaflet.css"; 
+import "leaflet/dist/leaflet.css";
 import "./MapStyles.css";
-import PropTypes from "prop-types"; 
-import LocationMarker from "./LocationMarker"; 
-import L from "leaflet"; 
+import PropTypes from "prop-types";
+import LocationMarker from "./LocationMarker";
+import L from "leaflet";
 import { useState, useEffect, useCallback } from "react";
 import InstructionPopUp from "./InstructionPopUp";
 import ScrollButton from "./ScrollButton";
@@ -22,52 +22,55 @@ L.Icon.Default.mergeOptions({
 });
 
 const MapCenter = ({ position }) => {
-    const map = useMap(); 
+    const map = useMap();
 
     useEffect(() => {
         if (position) {
-            map.setView(position, map.getZoom()); 
+            map.setView(position, map.getZoom());
         }
-    }, [position, map]); 
+    }, [position, map]);
 
     return null;
 };
 
 MapCenter.propTypes = {
-    position: PropTypes.arrayOf(PropTypes.number).isRequired, 
+    position: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 const LocationButton = ({ onClick }) => (
-    <button 
-        onClick={onClick}
-        className="location-button"
-    >
+    <button onClick={onClick} className="location-button">
         Center
     </button>
 );
 
 LocationButton.propTypes = {
-    onClick: PropTypes.func.isRequired, 
+    onClick: PropTypes.func.isRequired,
 };
 
-const MapContainer = ({ updateLocation }) => {
+const MapContainer = ({ currentLocation, updateLocation }) => {
     const [position, setPosition] = useState([47.636719, -122.366806]);
     const [initialLoad, setInitialLoad] = useState(true);
+
+    useEffect(() => {
+        if (currentLocation) {
+            setPosition(currentLocation);
+        }
+    }, [currentLocation]);
 
     useEffect(() => {
         if (navigator.geolocation) {
             const getLocation = () => {
                 navigator.geolocation.getCurrentPosition(
                     (pos) => {
-                        const { latitude, longitude } = pos.coords; 
+                        const { latitude, longitude } = pos.coords;
                         const newPosition = [latitude, longitude];
-                        setPosition(newPosition); 
-                        updateLocation(newPosition); 
+                        setPosition(newPosition);
+                        updateLocation(newPosition);
                     },
                     (error) => {
-                        console.error("Error retrieving position:", error); 
+                        console.error("Error retrieving position:", error);
                     },
-                    { enableHighAccuracy: true } 
+                    { enableHighAccuracy: true }
                 );
             };
 
@@ -78,21 +81,21 @@ const MapContainer = ({ updateLocation }) => {
         } else {
             console.error("Geolocation not supported by this browser.");
         }
-    }, [updateLocation, initialLoad]); 
+    }, [updateLocation, initialLoad]);
 
     const handleLocationButtonClick = useCallback(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
-                    const { latitude, longitude } = pos.coords; 
+                    const { latitude, longitude } = pos.coords;
                     const newPosition = [latitude, longitude];
-                    setPosition(newPosition); 
-                    updateLocation(newPosition); 
+                    setPosition(newPosition);
+                    updateLocation(newPosition);
                 },
                 (error) => {
-                    console.error("Error retrieving position:", error); 
+                    console.error("Error retrieving position:", error);
                 },
-                { enableHighAccuracy: true } 
+                { enableHighAccuracy: true }
             );
         } else {
             console.error("Geolocation not supported by this browser.");
@@ -100,12 +103,12 @@ const MapContainer = ({ updateLocation }) => {
     }, [updateLocation]);
 
     return (
-        <div className="map" > 
+        <div className="map">
             <div className="map-container">
                 <LeafletMapContainer
                     center={position}
                     zoom={13}
-                    style={{ height: "100vh", width: "100%"}}
+                    style={{ height: "100vh", width: "100%" }}
                 >
                     <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -129,7 +132,8 @@ const MapContainer = ({ updateLocation }) => {
 };
 
 MapContainer.propTypes = {
-    updateLocation: PropTypes.func.isRequired, 
+    updateLocation: PropTypes.func.isRequired,
+    currentLocation: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default MapContainer;

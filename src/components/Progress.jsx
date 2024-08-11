@@ -51,7 +51,7 @@ const Progress = ({
             </button>
             {locationNameVisible && (
                 <div className="location-name">
-                    Location Name: {locationName}
+                    You have reached: {locationName}
                 </div>
             )}
             {descriptionVisible && (
