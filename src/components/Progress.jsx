@@ -35,8 +35,18 @@ const Progress = ({
                         Check Location
                     </button>
                 </div>
-                <p>Latitude: {currentLocation[0]}</p>
-                <p>Longitude: {currentLocation[1]}</p>
+                {/* <p>Latitude: {currentLocation[0]}</p>
+                <p>Longitude: {currentLocation[1]}</p> */}
+                <div>
+                    {currentLocation && currentLocation.length > 1 ? (
+                        <>
+                            <p>Latitude: {currentLocation[0]}</p>
+                            <p>Longitude: {currentLocation[1]}</p>
+                        </>
+                    ) : (
+                        <p>Location data is not available.</p>
+                    )}
+                </div>
             </div>
             <div>
                 <span>
@@ -44,7 +54,7 @@ const Progress = ({
                 </span>
             </div>
             <div>
-                <span>Current Clue: {currentClue}</span>
+                <span className="clue-name">Current Clue: {currentClue}</span>
             </div>
             <button type="button" onClick={nextClue}>
                 Next Clue
