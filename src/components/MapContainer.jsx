@@ -64,8 +64,10 @@ const MapContainer = ({ currentLocation, updateLocation }) => {
                     (pos) => {
                         const { latitude, longitude } = pos.coords;
                         const newPosition = [latitude, longitude];
+                        console.log("Initial Load - Current Position:", newPosition);
                         setPosition(newPosition);
                         updateLocation(newPosition);
+                        setInitialLoad(false); // Prevent further initial load calls
                     },
                     (error) => {
                         console.error("Error retrieving position:", error);
@@ -89,6 +91,7 @@ const MapContainer = ({ currentLocation, updateLocation }) => {
                 (pos) => {
                     const { latitude, longitude } = pos.coords;
                     const newPosition = [latitude, longitude];
+                    console.log("Center Button Clicked - Current Position:", newPosition);
                     setPosition(newPosition);
                     updateLocation(newPosition);
                 },

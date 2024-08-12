@@ -40,39 +40,54 @@ const AppContent = () => {
     };
 
     const checkProximity = () => {
-        if (gameData) {
-            const { latitude, longitude } =
-                gameData.locations[currentLocationIndex];
-            const distance = calculateDistance(
-                currentLocation[0],
-                currentLocation[1],
-                parseFloat(latitude), // Convert to float from string
-                parseFloat(longitude)
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const { latitude, longitude } = pos.coords;
+                    const newPosition = [latitude, longitude];
+                    console.log("Check Location Button Clicked - Current Position:", newPosition);
+                    updateLocation(newPosition);
+    
+                    if (gameData) {
+                        const { latitude: targetLat, longitude: targetLng } = 
+                            gameData.locations[currentLocationIndex];
+                        const distance = calculateDistance(
+                            newPosition[0],
+                            newPosition[1],
+                            parseFloat(targetLat),
+                            parseFloat(targetLng)
+                        );
+                        console.log(`Distance to target site: ${distance} km`);
+                        setDistanceToTarget(distance);
+                        console.log("Show game data", gameData);
+    
+                        if (distance < 0.05) {
+                            setLocationName(gameData.locations[currentLocationIndex].name);
+                            setClueDescription(gameData.locations[currentLocationIndex].description);
+                            setDescriptionVisible(true);
+                            setLocationNameVisible(true);
+    
+                            const newProgressData = {
+                                id: progressData.id,
+                                targetLocationIndex: currentLocationIndex,
+                                gameComplete: gameComplete,
+                                userId: 1,
+                                huntId: gameData.huntId,
+                            };
+                            updateProgress(newProgressData);
+                            setTimeout(() => {
+                                moveToNextLocation();
+                            }, 6000);
+                        }
+                    }
+                },
+                (error) => {
+                    console.error("Error retrieving position:", error);
+                },
+                { enableHighAccuracy: true }
             );
-            console.log(`Distance to target site: ${distance} km`);
-            setDistanceToTarget(distance);
-            console.log("Show game data", gameData);
-
-            if (distance < 0.05) {
-                setLocationName(gameData.locations[currentLocationIndex].name);
-                setClueDescription(
-                    gameData.locations[currentLocationIndex].description
-                );
-                setDescriptionVisible(true);
-                setLocationNameVisible(true);
-
-                const newProgressData = {
-                    id: progressData.id,
-                    targetLocationIndex: currentLocationIndex,
-                    gameComplete: gameComplete,
-                    userId: 1,
-                    huntId: gameData.huntId,
-                };
-                updateProgress(newProgressData);
-                setTimeout(() => {
-                    moveToNextLocation();
-                }, 6000);
-            }
+        } else {
+            console.error("Geolocation not supported by this browser.");
         }
     };
 

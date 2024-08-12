@@ -31,7 +31,6 @@ const LocationMarker = ({ position }) => {
         targetPosition[0],
         targetPosition[1]
     );
-    console.log(`Distance to target: ${distanceToTarget} km`);
 
     const isVeryClose = distanceToTarget < 0.05; // < 50 meters
     const markerColor =
