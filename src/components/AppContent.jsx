@@ -24,7 +24,6 @@ const AppContent = () => {
     const [distanceToTarget, setDistanceToTarget] = useState(0);
     const [gameComplete, setGameComplete] = useState(false);
     const [progressData, setProgressData] = useState(null);
-    const [mockLocationIndex, setMockLocationIndex] = useState(null);
     const [open, setOpen] = useState(false);
     const [finishMessage, setFinishMessage] = useState("");
 
@@ -288,17 +287,6 @@ const AppContent = () => {
         }
     };
 
-    //Mock location manually for testing
-    const setMockLocation = (index) => {
-        if (gameData && gameData.locations[index]) {
-            const { latitude, longitude } = gameData.locations[index];
-            setCurrentLocation([parseFloat(latitude), parseFloat(longitude)]);
-            checkProximity();
-        } else {
-            console.log("Invalid location index");
-        }
-    };
-
     return (
         <div>
             <div className="content">
@@ -309,30 +297,6 @@ const AppContent = () => {
                             currentLocation={currentLocation}
                             startGame={startGame}
                         />
-                        <button
-                            onClick={() => {
-                                setMockLocationIndex(0);
-                                setMockLocation(0);
-                            }}
-                        >
-                            Set Mock Location 1
-                        </button>
-                        <button
-                            onClick={() => {
-                                setMockLocationIndex(1);
-                                setMockLocation(1);
-                            }}
-                        >
-                            Set Mock Location 2
-                        </button>
-                        <button
-                            onClick={() => {
-                                setMockLocationIndex(2);
-                                setMockLocation(2);
-                            }}
-                        >
-                            Set Mock Location 3
-                        </button>
                     </div>
                     <div className="progress-tracking">
                         <Progress
