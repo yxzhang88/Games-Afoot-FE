@@ -69,7 +69,7 @@ function InputForm({ currentLocation, startGame }) {
             {isFormVisible && (
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="distance">Distance (in miles):</label>
+                        <label htmlFor="distance">Distance (in miles): </label>
                         <input
                             type="text"
                             id="distance"
@@ -83,7 +83,7 @@ function InputForm({ currentLocation, startGame }) {
                         )}
                     </div>
                     <div>
-                        <label htmlFor="numSites">Number of Sites:</label>
+                        <label htmlFor="numSites">Number of Sites: </label>
                         <select
                             id="numSites"
                             value={numSites}
@@ -98,7 +98,7 @@ function InputForm({ currentLocation, startGame }) {
                         </select>
                     </div>
                     <div>
-                        <label htmlFor="gameType">Game Type:</label>
+                        <label htmlFor="gameType">Game Type: </label>
                         <input
                             type="text"
                             id="gameType"

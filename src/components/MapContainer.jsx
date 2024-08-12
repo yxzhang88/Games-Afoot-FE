@@ -9,7 +9,6 @@ import PropTypes from "prop-types";
 import LocationMarker from "./LocationMarker";
 import L from "leaflet";
 import { useState, useEffect, useCallback } from "react";
-import InstructionPopUp from "./InstructionPopUp";
 import ScrollButton from "./ScrollButton";
 
 // Fix default icon issues
@@ -39,7 +38,7 @@ MapCenter.propTypes = {
 
 const LocationButton = ({ onClick }) => (
     <button onClick={onClick} className="location-button">
-        Center
+        Update Location
     </button>
 );
 
@@ -119,9 +118,6 @@ const MapContainer = ({ currentLocation, updateLocation }) => {
                     />
                     <MapCenter position={position} />{" "}
                     <LocationMarker position={position} />{" "}
-                    <div className="instruction-icon">
-                        <InstructionPopUp />
-                    </div>
                     <div className="scroll-button">
                         <ScrollButton />
                     </div>
