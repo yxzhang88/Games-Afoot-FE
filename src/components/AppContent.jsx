@@ -3,11 +3,13 @@ import axios from "axios";
 import InputForm from "./InputForm";
 import Progress from "./Progress";
 import MapContainer from "./MapContainer";
+import InstructionPopUp from "./InstructionPopUp";
 import calculateDistance from "../utilityFunctions/calculateDistance";
 import { Snackbar, Alert, LinearProgress } from "@mui/material";
 import "./MapStyles.css";
 import "./AppContent.css";
 import GameStartedMsg from "./GameStartedMsg";
+import kmToMi from "../utilityFunctions/kmToMi";
 
 const kBaseUrl = "https://games-afoot.onrender.com";
 
@@ -29,6 +31,7 @@ const AppContent = () => {
     const [finishMessage, setFinishMessage] = useState("");
     const [showGameStartedMsg, setShowGameStartedMsg] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [milesOrKm, setMilesOrKm] = useState("miles");
 
     const updateLocation = (newLocation) => {
         setCurrentLocation(newLocation);
@@ -58,6 +61,7 @@ const AppContent = () => {
                             parseFloat(targetLng)
                         );
                         console.log(`Distance to target site: ${distance} km`);
+                        console.log(`Miles to target site: ${kmToMi(distance)} mi`);
                         setDistanceToTarget(distance);
                         console.log("Show game data", gameData);
     
@@ -314,6 +318,9 @@ const AppContent = () => {
                 <div className="other-content">
                     <div className="user-input">
                         {showGameStartedMsg ? <GameStartedMsg setShow={setShowGameStartedMsg}/> : null}
+                        <div className="instruction-icon">
+                            <InstructionPopUp />
+                        </div>
                         <InputForm
                             handleSelectionData={handleSelectionData}
                             currentLocation={currentLocation}
@@ -332,6 +339,8 @@ const AppContent = () => {
                             descriptionVisible={descriptionVisible}
                             locationName={locationName}
                             locationNameVisible={locationNameVisible}
+                            milesOrKm={milesOrKm}
+                            setMilesOrKm={setMilesOrKm}
                         />
                     </div>
                 </div>

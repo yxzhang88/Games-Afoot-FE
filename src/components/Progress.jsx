@@ -1,4 +1,6 @@
 import PropTypes from "prop-types";
+import kmToMi from "../utilityFunctions/kmToMi";
+import { Button } from "@mui/material";
 
 const Progress = ({
     currentClue,
@@ -10,6 +12,8 @@ const Progress = ({
     descriptionVisible,
     locationName,
     locationNameVisible,
+    milesOrKm,
+    setMilesOrKm,
 }) => {
     // console.log("Progress component:", {
     //     currentClue,
@@ -22,6 +26,11 @@ const Progress = ({
     //     locationName,
     //     locationNameVisible,
     // });
+
+    const distanceToTargetInMiles = kmToMi(distanceToTarget);
+    const handleKmToMi = () => {
+        setMilesOrKm(milesOrKm === 'miles' ? 'km' : 'miles');
+    }
 
     return (
         <div className="other-content">
@@ -50,7 +59,8 @@ const Progress = ({
             </div>
             <div>
                 <span>
-                    Distance to Target: {distanceToTarget.toFixed(2)} km
+                    Distance to Target: {milesOrKm == "miles" ? distanceToTargetInMiles.toFixed(2) : distanceToTarget.toFixed(2)}
+                    <Button onClick={handleKmToMi} size="small" sx={{ mx: 1, px: .25, minWidth:0}} variant="outlined">{milesOrKm}</Button>                
                 </span>
             </div>
             <div>
@@ -83,6 +93,8 @@ Progress.propTypes = {
     descriptionVisible: PropTypes.bool.isRequired,
     locationName: PropTypes.string.isRequired,
     locationNameVisible: PropTypes.bool.isRequired,
+    milesOrKm: PropTypes.string.isRequired,
+    setMilesOrKm: PropTypes.func.isRequired,
 };
 
 export default Progress;

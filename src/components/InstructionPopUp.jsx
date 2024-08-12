@@ -1,11 +1,12 @@
 import {
+    Button,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
 } from "@mui/material";
 
-import InfoIcon from "@mui/icons-material/Info";
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import "./InstructionPopUp.css";
@@ -22,11 +23,14 @@ function InstructionPopUp() {
 
     return (
         <div>
-            <InfoIcon
+            <Button 
+                variant="contained" 
+                size="small"
+                startIcon={<SportsEsportsIcon/>}
                 onClick={handleClickOpen}
-                aria-label="open"
-                color="primary"
-            />
+            >
+                How to Play
+            </Button>
             <Dialog
                 onClose={handleClose}
                 aria-labelledby="customized-dialog-title"
