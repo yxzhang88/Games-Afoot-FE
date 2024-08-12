@@ -4,9 +4,10 @@ import InputForm from "./InputForm";
 import Progress from "./Progress";
 import MapContainer from "./MapContainer";
 import calculateDistance from "../utilityFunctions/calculateDistance";
-import { Snackbar, Alert } from "@mui/material";
+import { Snackbar, Alert, LinearProgress } from "@mui/material";
 import "./MapStyles.css";
 import "./AppContent.css";
+import GameStartedMsg from "./GameStartedMsg";
 
 const kBaseUrl = "https://games-afoot.onrender.com";
 
@@ -26,6 +27,8 @@ const AppContent = () => {
     const [progressData, setProgressData] = useState(null);
     const [open, setOpen] = useState(false);
     const [finishMessage, setFinishMessage] = useState("");
+    const [showGameStartedMsg, setShowGameStartedMsg] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const updateLocation = (newLocation) => {
         setCurrentLocation(newLocation);
@@ -127,6 +130,7 @@ const AppContent = () => {
     };
 
     const getGameData = async (selectionData) => {
+        setIsLoading(true);
         try {
             if (selectionData) {
                 console.log("this is selectiondata", selectionData);
@@ -174,6 +178,8 @@ const AppContent = () => {
                                 huntId,
                                 gameComplete
                             );
+                            setIsLoading(false);
+                            setShowGameStartedMsg(true);
                         } else {
                             console.log("Locations data is empty");
                         }
@@ -292,11 +298,13 @@ const AppContent = () => {
             <div className="content">
                 <div className="other-content">
                     <div className="user-input">
+                        {showGameStartedMsg ? <GameStartedMsg setShow={setShowGameStartedMsg}/> : null}
                         <InputForm
                             handleSelectionData={handleSelectionData}
                             currentLocation={currentLocation}
                             startGame={startGame}
                         />
+                        {isLoading ? <LinearProgress color="secondary" /> : null}
                     </div>
                     <div className="progress-tracking">
                         <Progress
