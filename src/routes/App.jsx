@@ -24,7 +24,7 @@ const App = () => {
                     <Route path="aboutgame" element={<AboutGame />} />
                 </Routes>
             </div>
-            <Footer />
+            <Footer className="footer"/>
         </BrowserRouter>
     );
 };

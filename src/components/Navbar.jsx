@@ -11,6 +11,10 @@ const Navbar = () => {
         setDropdownOpen(!dropdownOpen);
     };
 
+    const handleCloseDropdown = () => {
+        setDropdownOpen(false);
+    }
+
     const handleClickOutside = (event) => {
         if (
             dropdownRef.current &&
@@ -20,12 +24,12 @@ const Navbar = () => {
         }
     };
 
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    // useEffect(() => {
+    //     document.addEventListener("mousedown", handleClickOutside);
+    //     return () => {
+    //         document.removeEventListener("mousedown", handleClickOutside);
+    //     };
+    // }, []);
 
     return (
         <header className="header">
@@ -33,12 +37,12 @@ const Navbar = () => {
                 <img
                     src={logo1}
                     alt="logo"
-                    style={{ width: "50%", height: "auto" }}
+                    style={{ width: 250, height: "auto" }}
                 />
             </div>
             <div className="menu">
                 <button onClick={toggleDropdown} className="menu-button">
-                    ☰
+                    {dropdownOpen ? "x" : "☰"}
                 </button>
                 {dropdownOpen && (
                     <div className="dropdown-menu" ref={dropdownRef}>
