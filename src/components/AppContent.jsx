@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import InputForm from "./InputForm";
 import Progress from "./Progress";
@@ -49,11 +49,14 @@ const AppContent = () => {
                 (pos) => {
                     const { latitude, longitude } = pos.coords;
                     const newPosition = [latitude, longitude];
-                    console.log("Check Location Button Clicked - Current Position:", newPosition);
+                    console.log(
+                        "Check Location Button Clicked - Current Position:",
+                        newPosition
+                    );
                     updateLocation(newPosition);
-    
+
                     if (gameData) {
-                        const { latitude: targetLat, longitude: targetLng } = 
+                        const { latitude: targetLat, longitude: targetLng } =
                             gameData.locations[currentLocationIndex];
                         const distance = calculateDistance(
                             newPosition[0],
@@ -62,16 +65,23 @@ const AppContent = () => {
                             parseFloat(targetLng)
                         );
                         console.log(`Distance to target site: ${distance} km`);
-                        console.log(`Miles to target site: ${kmToMi(distance)} mi`);
+                        console.log(
+                            `Miles to target site: ${kmToMi(distance)} mi`
+                        );
                         setDistanceToTarget(distance);
                         console.log("Show game data", gameData);
-    
+
                         if (distance < 0.05) {
-                            setLocationName(gameData.locations[currentLocationIndex].name);
-                            setClueDescription(gameData.locations[currentLocationIndex].description);
+                            setLocationName(
+                                gameData.locations[currentLocationIndex].name
+                            );
+                            setClueDescription(
+                                gameData.locations[currentLocationIndex]
+                                    .description
+                            );
                             setDescriptionVisible(true);
                             setLocationNameVisible(true);
-    
+
                             const newProgressData = {
                                 id: progressData.id,
                                 targetLocationIndex: currentLocationIndex,
@@ -266,12 +276,6 @@ const AppContent = () => {
         }
     };
 
-    useEffect(() => {
-        if (progressData) {
-            console.log("Progress data updated:", progressData);
-        }
-    }, [progressData]);
-
     const handleProgressUpdate = async (url) => {
         // console.log("logging progress data", progressData);
 
@@ -293,6 +297,7 @@ const AppContent = () => {
         const url = `${kBaseUrl}/progress/${id}/update-progress`;
         console.log("Updating progress with ID:", progressData.id);
         await handleProgressUpdate(url, progressData);
+        saveGameStateToLocal(gameData, progressData);
     };
 
     const completeGameProgress = async (progressData) => {
@@ -300,6 +305,81 @@ const AppContent = () => {
         const url = `${kBaseUrl}/progress/${id}/complete-game`;
         console.log("Game completed progress with ID:", progressData.id);
         await handleProgressUpdate(url, progressData);
+        saveGameStateToLocal(gameData, progressData);
+
+        // Clear local storage after completing the game
+        localStorage.removeItem("gameState");
+    };
+
+    const saveGameStateToLocal = useCallback(() => {
+        const gameState = {
+            gameData,
+            progressData,
+            selectionData,
+            currentLocationIndex,
+            currentClueIndex,
+            currentClue,
+            distanceToTarget,
+            gameComplete,
+        };
+        localStorage.setItem("gameState", JSON.stringify(gameState));
+    }, [
+        gameData,
+        progressData,
+        selectionData,
+        currentLocationIndex,
+        currentClueIndex,
+        currentClue,
+        distanceToTarget,
+        gameComplete,
+    ]);
+
+    useEffect(() => {
+        if (progressData) {
+            console.log("Progress data updated:", progressData);
+            saveGameStateToLocal();
+        }
+    }, [progressData, saveGameStateToLocal]);
+
+    const handleContinueGame = () => {
+        if (progressData) {
+            return;
+        }
+        try {
+            const {
+                gameData,
+                progressData,
+                selectionData,
+                currentLocationIndex,
+                currentClueIndex,
+                currentClue,
+                distanceToTarget,
+                gameComplete,
+            } = JSON.parse(localStorage.getItem("gameState"));
+
+            if (gameData && progressData) {
+                setGameData(gameData);
+                setProgressData(progressData);
+                setSelectionData(selectionData);
+
+                setCurrentLocationIndex(currentLocationIndex || 0);
+                setCurrentClueIndex(currentClueIndex || 0);
+                setCurrentClue(currentClue || "");
+                setClueDescription(clueDescription || "");
+                setDescriptionVisible(descriptionVisible || false);
+                setLocationName(locationName || "");
+                setLocationNameVisible(locationNameVisible || false);
+                setDistanceToTarget(distanceToTarget || 0);
+                setGameComplete(gameComplete || false);
+            } else {
+                console.log("No saved game state found.");
+            }
+        } catch (error) {
+            console.error(
+                "Error loading game state from local storage:",
+                error
+            );
+        }
     };
 
     const startGame = (selectionData) => {
@@ -311,22 +391,28 @@ const AppContent = () => {
             console.log("Selection data or game piece is empty");
         }
     };
-
+    handleContinueGame();
     return (
         <div>
             <div className="content">
                 <div className="other-content">
                     <div className="user-input">
-                        {showGameStartedMsg ? <GameStartedMsg setShow={setShowGameStartedMsg}/> : null}
+                        {showGameStartedMsg ? (
+                            <GameStartedMsg setShow={setShowGameStartedMsg} />
+                        ) : null}
                         <div className="instruction-icon">
                             <InstructionPopUp />
                         </div>
+
                         <InputForm
+                            initialSelectionData={selectionData}
                             handleSelectionData={handleSelectionData}
                             currentLocation={currentLocation}
                             startGame={startGame}
                         />
-                        {isLoading ? <LinearProgress color="secondary" /> : null}
+                        {isLoading ? (
+                            <LinearProgress color="secondary" />
+                        ) : null}
                     </div>
                     <div className="progress-tracking">
                         <Progress
