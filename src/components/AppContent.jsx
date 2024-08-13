@@ -343,35 +343,40 @@ const AppContent = () => {
     }, [progressData, saveGameStateToLocal]);
 
     const handleContinueGame = () => {
-        if (progressData) {
+        if (progressData && gameData) {
             return;
         }
         try {
-            const {
-                gameData,
-                progressData,
-                selectionData,
-                currentLocationIndex,
-                currentClueIndex,
-                currentClue,
-                distanceToTarget,
-                gameComplete,
-            } = JSON.parse(localStorage.getItem("gameState"));
+            const savedState = JSON.parse(localStorage.getItem("gameState"));
+            if (savedState) {
+                const {
+                    gameData: savedGameData,
+                    progressData: savedProgressData,
+                    selectionData: savedSelectionData,
+                    currentLocationIndex,
+                    currentClueIndex,
+                    currentClue,
+                    distanceToTarget,
+                    gameComplete,
+                } = savedState;
 
-            if (gameData && progressData) {
-                setGameData(gameData);
-                setProgressData(progressData);
-                setSelectionData(selectionData);
+                if (savedGameData && savedProgressData) {
+                    setGameData(savedGameData);
+                    setProgressData(savedProgressData);
+                    setSelectionData(savedSelectionData);
 
-                setCurrentLocationIndex(currentLocationIndex || 0);
-                setCurrentClueIndex(currentClueIndex || 0);
-                setCurrentClue(currentClue || "");
-                setClueDescription(clueDescription || "");
-                setDescriptionVisible(descriptionVisible || false);
-                setLocationName(locationName || "");
-                setLocationNameVisible(locationNameVisible || false);
-                setDistanceToTarget(distanceToTarget || 0);
-                setGameComplete(gameComplete || false);
+                    setCurrentLocationIndex(currentLocationIndex || 0);
+                    setCurrentClueIndex(currentClueIndex || 0);
+                    setCurrentClue(currentClue || "");
+                    setClueDescription(clueDescription || "");
+                    setDescriptionVisible(descriptionVisible || false);
+                    setLocationName(locationName || "");
+                    setLocationNameVisible(locationNameVisible || false);
+                    setDistanceToTarget(distanceToTarget || 0);
+                    setGameComplete(gameComplete || false);
+                } else {
+                    console.log("No saved game state found.");
+                }
             } else {
                 console.log("No saved game state found.");
             }
