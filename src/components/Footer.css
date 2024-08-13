@@ -7,3 +7,11 @@
     position: relative;
     bottom: 0;
 }
+
+@media (max-width: 768px) {
+    .footer {
+        /* position: absolute; */
+        top: 33rem;
+        z-index: 900;
+    }
+}
