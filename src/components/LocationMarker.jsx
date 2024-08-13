@@ -18,7 +18,7 @@ const createIcon = (color, isClose) => {
     });
 };
 
-const LocationMarker = ({ position, distanceToTarget }) =>
+const LocationMarker = ({ position, distanceToTarget, gameStarted }) =>
 {
     console.log("Received distanceToTarget:", distanceToTarget);
     const isVeryClose = distanceToTarget < 0.05; // < 50 meters
@@ -46,6 +46,15 @@ const LocationMarker = ({ position, distanceToTarget }) =>
         }
     }, [isVeryClose]);
 
+    if (!gameStarted) {
+        return (
+            <Marker position={position} icon={createIcon("grey", false)}>
+                <Popup>
+                    <strong>Game not started yet</strong>
+                </Popup>
+            </Marker>
+        );
+    }
     return (
         <Marker position={position} icon={dynamicIcon} ref={markerRef}>
             <Popup>
@@ -90,6 +99,7 @@ const LocationMarker = ({ position, distanceToTarget }) =>
 LocationMarker.propTypes = {
     position: PropTypes.arrayOf(PropTypes.number).isRequired,
     distanceToTarget: PropTypes.number,
+    gameStarted: PropTypes.bool.isRequired,
 };
 
 export default LocationMarker;
