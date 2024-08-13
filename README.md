@@ -6,7 +6,7 @@ GamesAfoot is a web application allows users to participate in a scavenger hunt 
 
 ## Team
 - **Jaime Mitchell**: Original concept, Backend
-- **Nina Sohn**: Backend
+- **Nina Sohn**: Backend/Frontend Assist
 - **Jenny Chen**: Frontend
 - **Miranda Zhang**: Frontend
 
@@ -63,10 +63,11 @@ Frontend
 Frontend will start on: `http://localhost:5173` .
 
 5. **Testing**:
+   Run unit tests using vitest
     ```bash
     npm run test
     ```
-6. Backend Setup
+7. Backend Setup
     🔗 (https://github.com/enigmatic-loop/Games-Afoot-BE)
    
 
