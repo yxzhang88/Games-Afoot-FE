@@ -46,7 +46,7 @@ LocationButton.propTypes = {
     onClick: PropTypes.func.isRequired,
 };
 
-const MapContainer = ({ currentLocation, updateLocation }) => {
+const MapContainer = ({ currentLocation, updateLocation, distanceToTarget }) => {
     const [position, setPosition] = useState([47.636719, -122.366806]);
     const [initialLoad, setInitialLoad] = useState(true);
 
@@ -74,7 +74,6 @@ const MapContainer = ({ currentLocation, updateLocation }) => {
                     { enableHighAccuracy: true }
                 );
             };
-
             if (initialLoad) {
                 getLocation();
                 setInitialLoad(false);
@@ -117,7 +116,7 @@ const MapContainer = ({ currentLocation, updateLocation }) => {
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
                     <MapCenter position={position} />{" "}
-                    <LocationMarker position={position} />{" "}
+                    <LocationMarker position={position} distanceToTarget={distanceToTarget}  />{" "}
                     <div className="scroll-button">
                         <ScrollButton />
                     </div>
@@ -133,6 +132,7 @@ const MapContainer = ({ currentLocation, updateLocation }) => {
 MapContainer.propTypes = {
     updateLocation: PropTypes.func.isRequired,
     currentLocation: PropTypes.arrayOf(PropTypes.number).isRequired,
+    distanceToTarget: PropTypes.number.isRequired,
 };
 
 export default MapContainer;

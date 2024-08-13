@@ -1,7 +1,6 @@
 import { Marker, Popup } from "react-leaflet";
 import PropTypes from "prop-types";
 import L from "leaflet";
-import calculateDistance from "../utilityFunctions/calculateDistance";
 import { useEffect, useRef } from "react";
 import "./MapStyles.css";
 
@@ -19,19 +18,9 @@ const createIcon = (color, isClose) => {
     });
 };
 
-const LocationMarker = ({ position }) => {
-    // Hardcoded target location and details
-    const targetPosition = [47.6315648, -122.3753728];
-
-    const [latitude, longitude] = position;
-
-    const distanceToTarget = calculateDistance(
-        latitude,
-        longitude,
-        targetPosition[0],
-        targetPosition[1]
-    );
-
+const LocationMarker = ({ position, distanceToTarget }) =>
+{
+    console.log("Received distanceToTarget:", distanceToTarget);
     const isVeryClose = distanceToTarget < 0.05; // < 50 meters
     const markerColor =
         distanceToTarget < 0.05
@@ -51,7 +40,6 @@ const LocationMarker = ({ position }) => {
         }
     }, [position]);
 
-    // Use a separate useEffect hook to handle the logic
     useEffect(() => {
         if (markerRef.current && isVeryClose) {
             markerRef.current.openPopup();
@@ -66,31 +54,31 @@ const LocationMarker = ({ position }) => {
                         <>
                             <strong>Congratulations!</strong>
                             <br />
-                            You have arrived!
+                            You’ve reached your destination!
                         </>
                     ) : markerColor === "green" ? (
                         <>
-                            <strong>Great job!</strong>
+                            <strong>Almost there! </strong>
                             <br />
-                            You are very close to the target.
+                            Just a few steps away from the target!
                             <br />
                             Distance to target: {distanceToTarget.toFixed(2)} km
                         </>
                     ) : markerColor === "blue" ? (
                         <>
-                            <strong>Keep going!</strong>
+                            <strong>Great job! </strong>
                             <br />
-                            You are getting closer to the target.
+                            You are getting closer to the target!
                             <br />
                             Distance to target: {distanceToTarget.toFixed(2)} km
                         </>
                     ) : (
                         <>
-                            <strong>Keep moving!</strong>
+                            <strong>Keep going! </strong>
                             <br />
-                            Latitude: {latitude.toFixed(6)}
+                            You’re still far from the goal. Keep going and make some progress!
                             <br />
-                            Longitude: {longitude.toFixed(6)}
+                            Distance to target: {distanceToTarget.toFixed(2)} km
                         </>
                     )}
                 </div>
@@ -99,9 +87,9 @@ const LocationMarker = ({ position }) => {
     );
 };
 
-// Define PropTypes for the component
 LocationMarker.propTypes = {
     position: PropTypes.arrayOf(PropTypes.number).isRequired,
+    distanceToTarget: PropTypes.number,
 };
 
 export default LocationMarker;

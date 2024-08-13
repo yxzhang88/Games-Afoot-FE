@@ -349,6 +349,7 @@ const AppContent = () => {
                         <MapContainer
                             currentLocation={currentLocation}
                             updateLocation={updateLocation}
+                            distanceToTarget={distanceToTarget} 
                         />
                     }
                 </div>
