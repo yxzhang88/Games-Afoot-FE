@@ -1,10 +1,16 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-function InputForm({ currentLocation, startGame }) {
-    const [distance, setDistance] = useState("");
-    const [numSites, setNumSites] = useState("");
-    const [gameType, setGameType] = useState("");
+function InputForm({ currentLocation, startGame, initialSelectionData }) {
+    const [distance, setDistance] = useState(
+        initialSelectionData?.distance || ""
+    );
+    const [numSites, setNumSites] = useState(
+        initialSelectionData?.numSites || ""
+    );
+    const [gameType, setGameType] = useState(
+        initialSelectionData?.gameType || ""
+    );
     const [distanceError, setDistanceError] = useState("");
     const [gameTypeError, setGameTypeError] = useState("");
     const [isFormVisible, setIsFormVisible] = useState(true); // State to manage visibility
@@ -126,6 +132,7 @@ function InputForm({ currentLocation, startGame }) {
 InputForm.propTypes = {
     currentLocation: PropTypes.arrayOf(PropTypes.number).isRequired,
     startGame: PropTypes.func.isRequired,
+    initialSelectionData: PropTypes.object,
 };
 
 export default InputForm;
