@@ -60,7 +60,7 @@ Frontend
     ```bash
     npm run dev
     ```
-Frontend will start on: `http: htt://localhost:5173` .
+Frontend will start on: `http://localhost:5173` .
 
 5. **Testing**:
     ```bash
