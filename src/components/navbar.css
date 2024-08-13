@@ -17,22 +17,25 @@
     color: white;
     font-size: 24px;
     cursor: pointer;
+    position: absolute;
+    left: auto;
+    right: 20px;
+    top: 2rem;
 }
 
 .menu {
-    position: relative;
     z-index: 30;
 }
 
 .dropdown-menu {
-    position: absolute;
-    top: 100%;
+    position: relative;
+    /* top: 100%; */
     right: 0;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    z-index: 40;
+    z-index: -1;
     margin-top: 8px;
 }
 
@@ -43,4 +46,11 @@
 
 .dropdown-item:hover {
     background-color: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+    .dropdown-menu {
+        right: 1rem;
+        top: 1rem;
+    }
 }
