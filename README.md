@@ -17,7 +17,7 @@ This frontend application for the [Games-Afoot] features a user-friendly interfa
 
 ## Features
 
-- Location-Based Scavenger Hunts: Users can start a scavenger hunt based on their current.
+- Location-Based Scavenger Hunts: Users can start a scavenger hunt based on their current location.
 - Hints for Locations: The application generates 3 hints for users to discover the next location in the hunt.
 - Progress Tracking: Users progresses are stored in database
 - Interactive Map: Users will see their location on the map and marker will turn different colors depend on their distance.
