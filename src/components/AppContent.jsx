@@ -32,6 +32,7 @@ const AppContent = () => {
     const [showGameStartedMsg, setShowGameStartedMsg] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [milesOrKm, setMilesOrKm] = useState("miles");
+    const [gameStarted, setGameStarted] = useState(false);
 
     const updateLocation = (newLocation) => {
         setCurrentLocation(newLocation);
@@ -160,17 +161,14 @@ const AppContent = () => {
 
                 if (response.data && response.data.id) {
                     const huntId = response.data.id;
+                    console.log("Hunt ID:", huntId);
                     try {
                         const generateLocationsResponse = await axios.post(
                             `${kBaseUrl}/hunts/${huntId}/generate_locations`
                         );
-                        const generateLocations =
-                            generateLocationsResponse.data;
+                        const generateLocations = generateLocationsResponse.data;
                         if (generateLocations) {
-                            console.log(
-                                "Locations successfully added to Hunt ID",
-                                { huntId }
-                            );
+                            console.log("Locations successfully added to Hunt ID", huntId);
                         } else {
                             console.log("Locations data is empty");
                         }
@@ -178,9 +176,6 @@ const AppContent = () => {
                         console.error("Error posting locations:", error);
                     }
                     try {
-                        console.log("Hunt data:", response.data);
-                        const huntId = response.data.id;
-                        console.log("Hunt ID:", huntId);
                         const locationsResponse = await axios.get(
                             `${kBaseUrl}/hunts/${huntId}/locations`
                         );
@@ -192,12 +187,7 @@ const AppContent = () => {
                                 locations: locationsData,
                             };
                             setGameData(gamePiece);
-                            await createProgress(
-                                currentLocationIndex,
-                                huntId,
-                                gameComplete
-                            );
-                            setIsLoading(false);
+                            await createProgress(currentLocationIndex, huntId, gameComplete);
                             setShowGameStartedMsg(true);
                         } else {
                             console.log("Locations data is empty");
@@ -206,33 +196,42 @@ const AppContent = () => {
                         console.error("Error fetching locations:", error);
                     }
                 } else {
-                    console.log(
-                        "POST /hunts response does not contain hunt ID"
-                    );
+                    console.log("POST /hunts response does not contain hunt ID");
                 }
             } else {
                 console.log("Selection data is empty");
             }
         } catch (error) {
             console.error("Error starting game:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
-
+    
     useEffect(() => {
         console.log("game piece has been updated:", gameData);
     }, [gameData]);
 
     useEffect(() => {
-        if (gameData && gameData.locations.length > 0) {
+        if (gameData && currentLocation && gameData.locations.length > 0) {
             const location = gameData.locations[currentLocationIndex];
-            const { clues, description } = location;
+            const { latitude: targetLat, longitude: targetLng, clues, description } = location;
+
+            const distance = calculateDistance(
+                currentLocation[0],
+                currentLocation[1],
+                parseFloat(targetLat),
+                parseFloat(targetLng)
+            );
+            setDistanceToTarget(distance);
+            
             console.log(clues);
             if (clues && clues.length > 0) {
                 setCurrentClue(clues[currentClueIndex]);
                 setClueDescription(description);
             }
         }
-    }, [gameData, currentLocationIndex, currentClueIndex]);
+    }, [gameData, currentLocation, currentLocationIndex, currentClueIndex]);
 
     const createProgress = async (
         currentLocationIndex,
@@ -307,6 +306,7 @@ const AppContent = () => {
         if (selectionData) {
             handleSelectionData(selectionData);
             getGameData(selectionData);
+            setGameStarted(true);
         } else {
             console.log("Selection data or game piece is empty");
         }
@@ -349,6 +349,8 @@ const AppContent = () => {
                         <MapContainer
                             currentLocation={currentLocation}
                             updateLocation={updateLocation}
+                            gameStarted={gameStarted} 
+                            distanceToTarget={distanceToTarget} 
                         />
                     }
                 </div>
