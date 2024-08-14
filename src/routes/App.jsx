@@ -9,23 +9,25 @@ import "../components/AppContent.css"; // General styles
 
 const App = () => {
     return (
-        <BrowserRouter>
-            <Navbar />
-            <div className="app-container">
-                <Routes>
-                    <Route
-                        path="/"
-                        element={
-                            <div>
-                                <AppContent />
-                            </div>
-                        }
-                    />
-                    <Route path="aboutgame" element={<AboutGame />} />
-                </Routes>
-            </div>
+        <div>
+            <BrowserRouter>
+                <Navbar />
+                <div className="app-container">
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                <div>
+                                    <AppContent />
+                                </div>
+                            }
+                        />
+                        <Route path="aboutgame" element={<AboutGame />} />
+                    </Routes>
+                </div>
+            </BrowserRouter>
             <Footer className="footer"/>
-        </BrowserRouter>
+        </div>
     );
 };
 

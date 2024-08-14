@@ -34,11 +34,13 @@ const Navbar = () => {
     return (
         <header className="header">
             <div className="logo">
+                <NavLink to="/">
                 <img
                     src={logo1}
                     alt="logo"
                     style={{ width: 250, height: "auto" }}
                 />
+                </NavLink>
             </div>
             <div className="menu">
                 <button onClick={toggleDropdown} className="menu-button">
