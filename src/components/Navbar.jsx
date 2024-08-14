@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import logo1 from "../assets/logo1.png";
 import "./navbar.css";
 
@@ -11,18 +11,18 @@ const Navbar = () => {
         setDropdownOpen(!dropdownOpen);
     };
 
-    const handleCloseDropdown = () => {
-        setDropdownOpen(false);
-    }
+    // const handleCloseDropdown = () => {
+    //     setDropdownOpen(false);
+    // }
 
-    const handleClickOutside = (event) => {
-        if (
-            dropdownRef.current &&
-            !dropdownRef.current.contains(event.target)
-        ) {
-            setDropdownOpen(false);
-        }
-    };
+    // const handleClickOutside = (event) => {
+    //     if (
+    //         dropdownRef.current &&
+    //         !dropdownRef.current.contains(event.target)
+    //     ) {
+    //         setDropdownOpen(false);
+    //     }
+    // };
 
     // useEffect(() => {
     //     document.addEventListener("mousedown", handleClickOutside);
