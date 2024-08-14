@@ -6,7 +6,7 @@ GamesAfoot is a web application allows users to participate in a scavenger hunt 
 
 ## Team
 - **Jaime Mitchell**: Original concept, Backend
-- **Nina Sohn**: Backend/Frontend Assist
+- **Nina Sohn**: Backend Engineer & Frontend Assist
 - **Jenny Chen**: Frontend
 - **Miranda Zhang**: Frontend
 
