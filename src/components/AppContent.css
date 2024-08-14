@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 .content {
     display: flex;
     flex-direction: row;
