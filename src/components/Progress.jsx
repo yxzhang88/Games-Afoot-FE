@@ -60,7 +60,7 @@ const Progress = ({
             <div>
                 <span>
                     Distance to Target: {milesOrKm == "miles" ? distanceToTargetInMiles.toFixed(2) : distanceToTarget.toFixed(2)}
-                    <Button onClick={handleKmToMi} size="small" sx={{ mx: 1, px: .25, minWidth:0}} variant="outlined">{milesOrKm}</Button>                
+                    <Button onClick={handleKmToMi} size="small" sx={{ mx: 1, px: .25, minWidth:0}} variant="contained">{milesOrKm}</Button>                
                 </span>
             </div>
             <div>

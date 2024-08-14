@@ -3,6 +3,8 @@ html,
 #root {
     height: 100%;
     margin: 0;
+    font-family: papyrus, fantasy;
+    font-size: 16px;
 }
 
 .app-container {
