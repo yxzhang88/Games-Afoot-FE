@@ -5,7 +5,7 @@
 GamesAfoot is a web application allows users to participate in a scavenger hunt based on real-world locations. Users can input their starting location or use their current location and select the number of locations they want to visit within a specified radius. The app generates a list of locations using OpenAI and provides hints for the user to discover each location. As the user reaches each location, the next hint is revealed until the final destination is found. 🏆 ***Please note that OpenAI may generate unreal locations :) currently, the OpenAI prompt seems to be effectively generating real locations, however our team plans to integrate a locations API in the future!
 
 ## Team
-- **Jaime Mitchell**: Original concept, Backend
+- **Jaime Mitchell**: Original concept, Backend & Frontend Assist
 - **Nina Sohn**: Backend Engineer & Frontend Assist
 - **Jenny Chen**: Frontend
 - **Miranda Zhang**: Frontend
